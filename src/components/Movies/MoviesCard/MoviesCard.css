@@ -16,7 +16,7 @@
     flex-direction: column-reverse;
     height: 232px;
     padding: 0;
-    justify-content:flex-end;
+    justify-content: flex-end;
   }
 }
 
@@ -71,7 +71,6 @@
 @media screen and (max-width: 480px) {
   .movies-card__img {
     height: 168px;
- 
   }
 }
 .movies-card__btn-container {
@@ -86,13 +85,11 @@
   .movies-card__btn-container {
     bottom: 36px;
     right: 16px;
-
   }
 }
-.movies-card__btn{
+.movies-card__btn {
   width: 14px;
   height: 12px;
-
 }
 .movies-card__btn-container:hover {
   opacity: 0.6;
