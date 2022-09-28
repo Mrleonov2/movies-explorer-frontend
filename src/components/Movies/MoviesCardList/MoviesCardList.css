@@ -1,0 +1,74 @@
+.card-list__section {
+  background-color: #ffffff;
+  padding: 0 70px 0;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .card-list__section {
+    padding: 0 50px 0;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .card-list__section {
+    padding: 0 10px 0;
+  }
+}
+
+.card-list {
+  list-style-type: none;
+  padding: 70px 0 0 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .card-list {
+    padding: 60px 0 0 0;
+    row-gap: 35px;
+    column-gap: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 420px) {
+  .card-list {
+    row-gap: 16px;
+    column-gap: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 40px 0 0 0;
+  }
+}
+.card-list__more {
+  height: 166px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-list__more-btn {
+  border: none;
+  width: 320px;
+  height: 36px;
+  margin: 0 0 30px;
+  padding: 0;
+  transition: opacity 0.5s;
+}
+
+@media screen and (max-width: 420px) {
+  .card-list__more-btn {
+    width: 240px;
+  }
+}
+.card-list__more-btn:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

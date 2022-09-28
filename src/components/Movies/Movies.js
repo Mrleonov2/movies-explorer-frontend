@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchForm } from "../Movies/SearchForm/SearchForm";
+import { Preloader } from "../Movies/Preloader/Preloader";
 import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList";
 import { Footer } from "../Footer/Footer";
-
-export function SavedMovies({ loggedIn }) {
+export function Movies() {
   return (
     <>
       <SearchForm />
       <MoviesCardList />
+      {/* <Preloader /> */}
       <Footer />
     </>
   );

@@ -1,18 +1,18 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Switch } from "react-router-dom";
-import App from "../src/components/App";
+import App from "./components/App/App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 const root = createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
       <Switch>
         <App />
       </Switch>
-    </React.StrictMode>
-  </BrowserRouter>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
