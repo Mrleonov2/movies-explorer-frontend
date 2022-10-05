@@ -10,12 +10,14 @@ import { Footer } from "../Footer/Footer";
 export function Main({}) {
   return (
     <>
-      <Promo />
-      <NavTab />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main className="content">
+        <Promo />
+        <NavTab />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
       <Footer />
     </>
   );

@@ -8,9 +8,9 @@ import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 import { Header } from "../Header/Header";
-
+import { Footer } from "../Footer/Footer";
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isOpenPopup, setIsPopupOpen] = useState(false);
   function handlePopupClick() {
     setIsPopupOpen(!isOpenPopup);

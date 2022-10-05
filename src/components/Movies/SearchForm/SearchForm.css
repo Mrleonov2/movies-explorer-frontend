@@ -21,8 +21,8 @@
 
 .search-label {
   display: flex;
-  background-color: #ffffff;
-  border: 1px solid #ffffff;
+  background-color: #F4F4F4;
+  border: 1px solid #F4F4F4;
   border-radius: 40px;
   align-items: center;
   justify-content: space-between;
@@ -37,10 +37,10 @@
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 1px #424242;
   width: calc(100% - 30%);
   border-radius: 4px;
   color: #000000;
+  border: none;
 }
 
 .search-input {

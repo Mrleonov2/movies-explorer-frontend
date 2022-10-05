@@ -4,35 +4,31 @@
   justify-content: flex-start;
   align-items: center;
   margin: 0;
-  min-width: 220px;
-  padding: 0 70px;
 }
 
-@media screen and (max-width: 768px) {
-  .register {
-    padding: 0 50px;
-  }
-}
-
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 480px) {
   .register {
     padding: 0 30px;
   }
 }
 
 .register__container {
+  display: flex;
+  flex-direction: column;
   padding: 0;
-  margin: 0;
-  min-width: 438px;
+  margin: 0 0 70px;
+  max-width: 396px;
+  justify-content: flex-start;
 }
-
 @media screen and (max-width: 768px) {
   .register__container {
-    min-width: 288px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin: 0 0 232px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .register__container {
+    max-width: 260px;
+    margin: 0 0 30px;
   }
 }
 
@@ -41,6 +37,13 @@
   width: 38px;
   height: 38px;
   margin-top: 70px;
+  align-self: flex-start;
+}
+@media screen and (max-width: 768px) {
+  .register__logo {
+    align-self: center;
+    margin-top: 232px;
+  }
 }
 
 .register__logo:hover {
@@ -55,6 +58,12 @@
   letter-spacing: 0em;
   text-align: left;
   margin: 40px 0;
+}
+@media screen and (max-width: 480px) {
+  .register__title {
+    text-align: center;
+    margin: 50px 0 80px;
+  }
 }
 
 .register__input-container {
@@ -73,19 +82,18 @@
 }
 
 .register__input {
-  min-width: 410px;
   background-color: #ffffff;
   color: #000000;
   border: none;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 16px;
+  line-height: 17px;
   letter-spacing: 0em;
   text-align: left;
-  padding: 15px;
-
+  padding: 0 0 10px 0;
+  min-width: 396px;
   outline: none;
 }
 
@@ -94,14 +102,10 @@
   box-shadow: 0 0 0 1px #ffffff;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 480px) {
   .register__input {
     min-width: 260px;
   }
-}
-
-.register__input_error {
-  color: #ee3465;
 }
 
 .register__input-error {
@@ -112,7 +116,6 @@
   letter-spacing: 0em;
   text-align: left;
   color: #ee3465;
-  margin-top: 10px;
 }
 
 .register__submit-btn {
@@ -130,27 +133,30 @@
   letter-spacing: 0em;
   text-align: center;
   border-radius: 3px;
-  margin: 69px 0 16px 0;
-  min-width: 438px;
+  margin: 0 0 16px 0;
+  min-width: 396px;
 }
-
 @media screen and (max-width: 768px) {
   .register__submit-btn {
-    min-width: 288px;
+    margin: 0 0 14px 0;
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 480px) {
   .register__submit-btn {
-    margin: 157px 0 14px 0;
+    min-width: 260px;
+    margin: 69px 0 14px 0;
   }
 }
 
 .register__btn-container {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 480px) {
   .register__btn-container {
     margin-top: 0;
   }
@@ -164,6 +170,7 @@
   letter-spacing: 0em;
   text-align: center;
   color: #8b8b8b;
+  white-space: nowrap;
 }
 
 .register__log-in-btn {
@@ -180,7 +187,26 @@
   line-height: 17px;
   letter-spacing: 0em;
   text-align: center;
+  text-decoration: none;
   border: none;
+}
+@media screen and (max-width: 480px) {
+  .register__log-in-btn {
+    font-size: 12px;
+    line-height: 14px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .register__log-in {
+    font-size: 12px;
+    line-height: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .register__input-list {
+    margin-bottom: 153px;
+  }
 }
 
 .register__log-in-btn:hover {
@@ -192,6 +218,6 @@
 }
 
 .register__input-list {
-  margin: 0;
+  margin-bottom: 124px;
   padding: 0;
 }

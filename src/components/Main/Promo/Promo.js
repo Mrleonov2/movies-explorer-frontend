@@ -1,5 +1,5 @@
 import React from "react";
-import promoLogo from "../../../images/promoLogo.png";
+import promoLogo from "../../../images/promoLogo.svg";
 
 export function Promo() {
   return (

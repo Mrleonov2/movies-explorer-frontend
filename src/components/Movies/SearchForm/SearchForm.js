@@ -8,7 +8,7 @@ export function SearchForm() {
   }
 
   return (
-    <section className="search-section">
+    <form className="search-section">
       <label className="search-label">
         <input
           className="search-input"
@@ -17,7 +17,7 @@ export function SearchForm() {
           placeholder="Фильм"
           required
         />
-        <button className="search-btn">Найти</button>
+        <button className="search-btn" type="submit">Найти</button>
       </label>
 
       <div className="search-container">
@@ -29,6 +29,6 @@ export function SearchForm() {
         </button>
         <h3 className="search-para">Короткометражки</h3>
       </div>
-    </section>
+    </form>
   );
 }

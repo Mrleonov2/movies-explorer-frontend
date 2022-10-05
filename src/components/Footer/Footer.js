@@ -2,7 +2,7 @@ import React from "react";
 
 export function Footer() {
   return (
-    <section className="footer">
+    <footer className="footer">
       <p className="footer__para">
         Учебный проект Яндекс.Практикум х BeatFilm.
       </p>
@@ -21,6 +21,6 @@ export function Footer() {
           </li>
         </ul>
       </div>
-    </section>
+    </footer>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 
 export function Techs() {
   return (
-    <section className="techs techs_grey" id="techs">
+    <section className="techs" id="techs">
       <div className="techs__container">
         <h2 className="about__header">Технологии</h2>
         <h3 className="techs__header">7 технологий</h3>

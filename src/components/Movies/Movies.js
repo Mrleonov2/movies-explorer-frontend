@@ -6,9 +6,11 @@ import { Footer } from "../Footer/Footer";
 export function Movies() {
   return (
     <>
-      <SearchForm />
-      <MoviesCardList />
-      {/* <Preloader /> */}
+      <main content="content">
+        <SearchForm />
+        <MoviesCardList />
+        {/* <Preloader /> */}
+      </main>
       <Footer />
     </>
   );

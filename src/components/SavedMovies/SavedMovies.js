@@ -6,8 +6,10 @@ import { Footer } from "../Footer/Footer";
 export function SavedMovies({ loggedIn }) {
   return (
     <>
-      <SearchForm />
-      <MoviesCardList />
+      <main className="content">
+        <SearchForm />
+        <MoviesCardList />
+      </main>
       <Footer />
     </>
   );

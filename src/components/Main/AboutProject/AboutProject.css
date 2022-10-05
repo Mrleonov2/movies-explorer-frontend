@@ -87,7 +87,7 @@
   line-height: 24px;
   letter-spacing: -0.04em;
   text-align: left;
-  color: #ffffff;
+  color: #000000;
 }
 
 @media screen and (max-width: 645px) {
@@ -106,7 +106,7 @@
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
-  color: #ffffff;
+  color: #000000;
 }
 
 @media screen and (max-width: 645px) {
@@ -187,7 +187,6 @@
 
 .about__scale-header_white {
   color: #ffffff;
-  background-color: #303030;
 }
 
 .about__scale-para {
@@ -201,7 +200,7 @@
   line-height: 17px;
   letter-spacing: 0px;
   text-align: center;
-  color: #8b8b8b;
+  color: #A0A0A0;
   margin: 14px 0;
 }
 
