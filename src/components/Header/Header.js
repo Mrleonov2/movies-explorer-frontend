@@ -40,6 +40,7 @@ export function Header({ loggedIn, handlePopupClick, isHeaderMain }) {
         </div>
         <button
           onClick={handlePopupClick}
+          type="button"
           className={`header__burger-menu ${loggedIn &&
             "header__burger-menu_visible"}`}
         ></button>

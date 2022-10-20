@@ -8,7 +8,7 @@ export function SavedMovies({ loggedIn }) {
     <>
       <main className="content">
         <SearchForm />
-        <MoviesCardList />
+        <MoviesCardList isDeleted={true}/>
       </main>
       <Footer />
     </>

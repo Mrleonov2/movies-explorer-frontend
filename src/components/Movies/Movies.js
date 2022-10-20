@@ -8,7 +8,7 @@ export function Movies() {
     <>
       <main content="content">
         <SearchForm />
-        <MoviesCardList />
+        <MoviesCardList isActive={false}/>
         {/* <Preloader /> */}
       </main>
       <Footer />

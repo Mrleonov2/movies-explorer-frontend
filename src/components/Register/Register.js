@@ -9,7 +9,6 @@ export function Register() {
           <img src={headerLogo} alt="логотип проекта Movie-Explorer" />
         </Link>
         <h2 className="register__title">Добро пожаловать!</h2>
-
         <div className="register__input-list">
           <div className="register__input-container">
             <label className="register__input-title">

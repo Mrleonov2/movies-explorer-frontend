@@ -9,8 +9,6 @@ export function Portfolio() {
           <a
             href="https://github.com/Mrleonov2/how-to-learn"
             alt="static"
-            target="_blank"
-            rel="noopener noreferrer"
             className="portofolio__item-link"
           >
             <h4 className="portofolio__item-header">Статичный сайт</h4>

@@ -12,7 +12,7 @@ export function Login() {
               alt="логотип проекта Movie-Explorer"
             />
           </Link>
-          <h2 className="register__title">Добро пожаловать!</h2>
+          <h2 className="register__title">Рады видеть!</h2>
           <div className="register__input-container">
             <label className="register__input-title" for="register__input-email">E-mail
             <input required className="register__input" type="text" id="register__input-email"/>
@@ -22,7 +22,6 @@ export function Login() {
             <label className="register__input-title">Пароль
             <input required type="password" className="register__input"/>
             </label>
-            
           </div>
           <div className="register__input-error" type="text">
               Что-то пошло не так...

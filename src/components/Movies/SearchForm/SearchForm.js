@@ -8,8 +8,8 @@ export function SearchForm() {
   }
 
   return (
-    <form className="search-section">
-      <label className="search-label">
+    <section className="search-section">
+   <form className="search-form">
         <input
           className="search-input"
           type="text"
@@ -17,18 +17,20 @@ export function SearchForm() {
           placeholder="Фильм"
           required
         />
-        <button className="search-btn" type="submit">Найти</button>
-      </label>
+        <button className="search-btn" type="submit">
+          Найти
+        </button>
+        </form>
 
-      <div className="search-container">
+      <div className="search-switch-container">
         <button
           className={`search-switch ${shortFilms ? "" : "search-switch_start"}`}
           onClick={clickButton}
-        >
+          type="button">
           <div className="search-circle"></div>
         </button>
         <h3 className="search-para">Короткометражки</h3>
       </div>
-    </form>
+    </section>
   );
 }

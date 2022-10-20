@@ -14,8 +14,8 @@ export function Profile() {
           <div className="profile__input">mikhail-leonov@yandex.ru</div>
         </div>
       </div>
-      <button className="profile__edit-btn">Редактировать</button>
-      <button className="profile__log-out-btn">Выйти из аккаунта</button>
+      <button className="profile__edit-btn" type="button">Редактировать</button>
+      <button className="profile__log-out-btn" type="button">Выйти из аккаунта</button>
     </section>
   );
 }
