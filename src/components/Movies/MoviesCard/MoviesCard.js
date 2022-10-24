@@ -11,9 +11,10 @@ export function MoviesCard({ isActive, isDeleted }) {
   return (
     <li className="movies-card">
       {inactive ? (
-        <></>
+        <button className="movies-card__btn-container" type="button">     
+      </button>
       ) : (
-        <button className={`movies-card__btn-container`} type="button">
+        <button className="movies-card__btn-container" type="button">
           {active && (
             <img src={imgSaveFilm} alt="saved" className="movies-card__btn" />
           )}
