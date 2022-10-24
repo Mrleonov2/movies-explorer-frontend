@@ -49,7 +49,7 @@
   line-height: 29px;
   letter-spacing: 0em;
   text-align: left;
-  margin: 40px 0;
+  margin: 40px 0 35px;
 }
 @media screen and (max-width: 480px) {
   .register__title {
@@ -63,9 +63,11 @@
 }
 
 .register__input-container {
-  margin-bottom: 20px;
+  margin: 20px 0 0;
 }
-
+.register__input-container:first-of-type {
+  margin: 0px;
+}
 .register__input-title {
   font-size: 10px;
   font-style: normal;
@@ -78,7 +80,7 @@
 }
 
 .register__input {
-  background-color: #ffffff;
+  background-color: transparent;
   color: #000000;
   border: none;
   font-size: 14px;
@@ -90,6 +92,8 @@
   padding: 0 0 10px 0;
   min-width: 396px;
   outline: none;
+  margin-top: 5px;
+  border-bottom: #e8e8e8;
 }
 
 .register__input:focus {
@@ -102,9 +106,7 @@
     min-width: 260px;
   }
 }
-.register__input[type="password"] {
-  color: #ee3465;
-}
+
 .register__input-error {
   font-size: 10px;
   font-style: normal;
@@ -113,6 +115,7 @@
   letter-spacing: 0em;
   text-align: left;
   color: #ee3465;
+  margin-top: 5px;
 }
 
 .register__submit-btn {
@@ -215,6 +218,7 @@
 }
 
 .register__input-list {
-  margin-bottom: 124px;
+  margin-bottom: 134px;
   padding: 0;
+
 }

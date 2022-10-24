@@ -36,9 +36,7 @@ export function AboutProject() {
           </li>
           <li>
             <div>
-              <h3 className="about__scale-header">
-                4 недели
-              </h3>
+              <h3 className="about__scale-header">4 недели</h3>
             </div>
             <p className="about__scale-para">Front-end</p>
           </li>

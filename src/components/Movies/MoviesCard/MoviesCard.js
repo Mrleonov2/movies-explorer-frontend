@@ -4,7 +4,7 @@ import imgFilm from "../../../images/photo.jpg";
 import imgDelFilm from "../../../images/img-del-film.svg";
 
 export function MoviesCard({ isActive, isDeleted }) {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const [deleted, setDeleted] = useState(isDeleted);
   const [inactive, setInactive] = useState(false);
 

@@ -9,6 +9,7 @@ export function SearchForm() {
 
   return (
     <section className="search-section">
+      <div className="search-form-container">
    <form className="search-form">
         <input
           className="search-input"
@@ -17,11 +18,12 @@ export function SearchForm() {
           placeholder="Фильм"
           required
         />
+        
+        </form>
         <button className="search-btn" type="submit">
           Найти
         </button>
-        </form>
-
+        </div>
       <div className="search-switch-container">
         <button
           className={`search-switch ${shortFilms ? "" : "search-switch_start"}`}
