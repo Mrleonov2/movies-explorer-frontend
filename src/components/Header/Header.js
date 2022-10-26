@@ -21,7 +21,7 @@ export function Header({ loggedIn, handlePopupClick, isHeaderMain }) {
         <div
           className={`${
             loggedIn ? "header__account_hidden" : "header__account"
-          }`}
+          } `}
         >
           <Link
             to={`${loggedIn ? "/profile" : "/signup"}`}

@@ -28,7 +28,7 @@ export function AboutProject() {
         <ul className="about__scale-description">
           <li>
             <div>
-              <h3 className="about__scale-header about__scale-header_blue about__scale-header_white">
+              <h3 className="about__scale-header  about__scale-header_white about__scale-header_blue">
                 1 неделя
               </h3>
             </div>

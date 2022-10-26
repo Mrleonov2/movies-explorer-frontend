@@ -11,8 +11,6 @@
 @media screen and (max-width: 768px) {
   .profile {
     padding: 236px 18px 269px;
-    box-shadow:4px -4px 4px rgba(0, 0, 0, 0.25);
-    box-sizing: border-box;
   }
 }
 
