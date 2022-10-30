@@ -9,14 +9,22 @@ import { Login } from "../Login/Login";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isOpenPopup, setIsPopupOpen] = useState(false);
+  const [currentUser, setCurrentUser] = React.useState({
+    name: "",
+    about: "",
+    avatar: "",
+  });
   function handlePopupClick() {
     setIsPopupOpen(!isOpenPopup);
   }
   return (
     <div className="page">
+      <CurrentUserContext.Provider value={currentUser}>
       <Route exact path="/">
         <Header
           loggedIn={loggedIn}
@@ -40,6 +48,7 @@ function App() {
       <Route path="/signin">{<Login />}</Route>
       <Route path="/signup">{<Register />}</Route>
       {/* <Route path="/*"><NotFoundPage /></Route> */}
+      </CurrentUserContext.Provider>
     </div>
   );
 }
