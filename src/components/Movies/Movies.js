@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SearchForm } from "../Movies/SearchForm/SearchForm";
-import { Preloader } from "../Movies/Preloader/Preloader";
-import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList";
+
+import { MoviesCardList } from "./MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
-export function Movies() {
+export function Movies({ movies, searchMovie, isLoading, change }) {
+  useEffect(() => {}, []);
+
   return (
     <>
       <main content="content">
-        <SearchForm />
-        <MoviesCardList isActive={false}/>
-        {/* <Preloader /> */}
+        <SearchForm searchMovie={searchMovie} />
+        <MoviesCardList
+          isInactive={true}
+          movies={movies}
+          isLoading={isLoading}
+          change={change}
+        />
       </main>
       <Footer />
     </>

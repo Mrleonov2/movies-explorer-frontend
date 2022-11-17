@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.leonov.nomoredomains.sbs";
+export const BASE_URL = "https://api.movies.leonov.nomorepartiesxyz.ru";
 
 const checkResponse = (response) => {
   console.log("response ok: ", response);
@@ -10,7 +10,7 @@ const checkResponse = (response) => {
     throw err;
   });
 };
-export const register = ({ password, email }) => {
+export const register = ({  email, password, name }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     credentials: "include",
@@ -19,7 +19,7 @@ export const register = ({ password, email }) => {
       Accept: "application/json",
       credentials: "include",
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify({ password, email, name }),
   }).then(checkResponse);
 };
 export const authorize = ({ password, email }) => {

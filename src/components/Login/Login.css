@@ -1,13 +1,13 @@
 .login__container {
   /* 203 */
-  margin-top: 198px;
+  margin-top: 216px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 @media screen and (max-width: 480px) {
   .login__container {
-    margin-top: 218px;
+    margin-top: 236px;
   }
 }
 

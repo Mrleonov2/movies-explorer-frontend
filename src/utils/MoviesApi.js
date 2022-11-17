@@ -8,10 +8,10 @@ class MoviesApi {
     }
   }
 
-  getInitialCards() {
+  getMovies() {
     return fetch(`${this._baseUrl}`, {
       method: "GET",
-      credentials:"include",
+      //credentials:"include",
       headers: this._headers(),
     }).then(this._checkResponse);
   }
@@ -24,7 +24,7 @@ class MoviesApi {
     return Promise.reject(`Ошибка ${res.status}`);
   }
 }
-const moviesApi = new Api({
+const moviesApi = new MoviesApi({
   baseUrl: "https://api.nomoreparties.co/beatfilm-movies",
 });
 
