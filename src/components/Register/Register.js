@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
-import React, { useCallback } from "react";
+import React, { useCallback,useState } from "react";
 export function Register({onRegister}) {
-  const [values, setValues] = React.useState({});
-  const [errors, setErrors] = React.useState({});
-  const [isValid, setIsValid] = React.useState(false);
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!values.password || !values.email) {

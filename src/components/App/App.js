@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, useHistory, Link } from "react-router-dom";
 import { Header } from "../Header/Header";
 import { Main } from "../Main/Main";
@@ -18,20 +18,23 @@ import { searchFilter } from "../../utils/SearchFilter";
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isOpenPopup, setIsPopupOpen] = useState(false);
-  const [isLoading, setLoading] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({
+  const [isLoading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState({
     name: "Михаил",
     email: "leonov2002@mail.ru",
   });
-  const [change,setChange]= useState({})
-  const [movies, setMovies] = React.useState([]);
-  const [savedMovies, setSavedMovies] = React.useState([]);
+
+  const [resMessage, setResMessage] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+
+  const [change, setChange] = useState({});
   const history = useHistory();
-  React.useEffect(() => {
-
-
+  useEffect(() => {
+    if(loggedIn){
+      setMovies(sessionStorage.getItem("moviesData"));
+    }
   }, []);
-
   function handlePopupClick() {
     setIsPopupOpen(!isOpenPopup);
   }
@@ -68,16 +71,23 @@ function App() {
   function handleSaveMovie() {}
 
   function handleSearch(search) {
-
     moviesApi
       .getMovies()
       .then((res) => {
-setChange(search)
-    setLoading(true)
-        setMovies(searchFilter(res,search.search,JSON.parse(search.isShortFilms)));
-        console.log(movies)
-  
-      }).then(()=>{setLoading(false)})
+        setChange(search);
+        setLoading(true);
+        setMovies(
+          searchFilter(res, search.search, JSON.parse(search.isShortFilms))
+        );
+  sessionStorage.setItem("moviesData", JSON.stringify(movies));
+    
+
+
+        console.log(movies);
+      })
+      .then(() => {
+        setLoading(false);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -106,9 +116,10 @@ setChange(search)
         <Route path="/saved-movies">
           <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
           <SavedMovies
-            loggedIn={loggedIn}
+          movies={savedMovies}   
             isLoading={isLoading}
-            movies={savedMovies}
+            // searchMovie={handleSavedSearch}
+            
           />
         </Route>
         <Route path="/profile">
@@ -117,9 +128,9 @@ setChange(search)
         </Route>
         <Route path="/signin">{<Login onLogin={handleLogin} />}</Route>
         <Route path="/signup">{<Register onRegister={handleRegister} />}</Route>
-        {/* <Route path={"/*"}>
+        <Route path="/404">
           <NotFoundPage />
-        </Route> */}
+        </Route>
         <Popup isOpen={isOpenPopup} onClose={handlePopupClick}></Popup>
       </CurrentUserContext.Provider>
     </div>

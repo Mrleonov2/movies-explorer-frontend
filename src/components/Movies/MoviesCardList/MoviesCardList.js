@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MoviesCard } from "../MoviesCard/MoviesCard";
 import { Preloader } from "../Preloader/Preloader";
-
-const cardsPerPage = 7;
-let arrayForHoldingCards = [];
+import screenWidth from "../../../utils/getBroserWidth";
 
 export function MoviesCardList({
   isActive,
@@ -12,33 +10,30 @@ export function MoviesCardList({
   movies,
   savedMovies,
   isLoading,
-  change
+  change,
 }) {
-  const [cardsToShow, setCardsToShow] = useState([]);
+  const cardsPerPage = isMobile ? 5 : 7;
+  const [isMobile, setIsMobile] = useState(false);
   const [next, setNext] = useState(cardsPerPage);
-  const showBtn = useRef();
-
+  const [arrayForHoldingCards, setArrayForHoldingCards] = useState(movies);
+  const width = screenWidth();
+  const cardsToShow = arrayForHoldingCards.slice(0, next);
 
   useEffect(() => {
-    setCardsToShow([])
-
-    !isSaved && loopWithSlice(0, cardsPerPage);
-  }, [movies,change]);
-
-  const loopWithSlice = (start, end) => {
-    const slicedPosts = movies.slice(start, end);
-    arrayForHoldingCards = [...arrayForHoldingCards, ...slicedPosts];
-    setCardsToShow(arrayForHoldingCards);
-  };
-
-  const handleShowMore = () => {
-    loopWithSlice(next, next + cardsPerPage);
-    setNext(next + cardsPerPage);
-    if (arrayForHoldingCards.length >= movies.length || movies.length < 7) {
-      showBtn.current.remove();
+    updateWidth();
+    // setArrayForHoldingCards(movies);
+  }, [cardsToShow, arrayForHoldingCards]);
+  function updateWidth() {
+    if (width < 760) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
     }
-  };
+  }
 
+  const handleLoadMore = () => {
+    setNext(next + cardsPerPage);
+  };
   return (
     <section className="card-list__section">
       <ul
@@ -46,25 +41,26 @@ export function MoviesCardList({
           isSaved ? "card-list__saved" : "card-list__movies"
         }`}
       >
-        {isSaved ? savedMovies : cardsToShow.map((el, i) => (
-          <MoviesCard
-            item={el}
-            key={i}
-            isSaved={isSaved}
-            isActive={isActive}
-            isInactive={isInactive}
-          />
-        ))}
+        {!isSaved
+          ? cardsToShow.map((card, ind) => (
+              <MoviesCard
+                item={card}
+                key={ind}
+                isSaved={isSaved}
+                isActive={isActive}
+                isInactive={isInactive}
+              />
+            ))
+          : ""}
         {isLoading && <Preloader />}
-        <h2>Ничего не найдено</h2>
+        {/* <h2>Ничего не найдено</h2> */}
       </ul>
       <div className="card-list__more">
-        {!isSaved && (
-          <button
-            className="card-list__more-btn"
-            onClick={handleShowMore}
-            ref={showBtn}
-          >
+        {
+        arrayForHoldingCards.length > cardsPerPage &&
+          next < arrayForHoldingCards.length &&
+        !isSaved && (
+          <button className="card-list__more-btn" onClick={handleLoadMore}>
             Ещё
           </button>
         )}

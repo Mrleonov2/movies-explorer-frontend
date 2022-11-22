@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 export function Profile({ editProfile, logOut }) {
   const currentUser = React.useContext(CurrentUserContext);
-  console.log(currentUser);
   const [isValid, setIsValid] = React.useState(false);
   const [values, setValues] = React.useState({});
   const isMatch =
@@ -18,6 +17,7 @@ export function Profile({ editProfile, logOut }) {
     const value = target.value;
     setValues({ ...values, [name]: value });
     setIsValid(target.closest("form").checkValidity());
+    console.log(values);
   };
   const handleSubmit = (event) => {
     event.preventDefault();

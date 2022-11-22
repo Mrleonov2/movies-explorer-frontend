@@ -9,12 +9,8 @@ export function SearchForm({ searchMovie }) {
   useEffect(() => {
     setValues({
       search: sessionStorage.savedResult || "",
-      isShortFilms:  JSON.parse(sessionStorage.switchState || false) ,
+      isShortFilms: JSON.parse(sessionStorage.switchState || false),
     });
- 
-
-
-
   }, []);
 
   function handleChange(event) {
@@ -29,7 +25,7 @@ export function SearchForm({ searchMovie }) {
     sessionStorage.savedResult = values.search;
     sessionStorage.switchState = values.isShortFilms;
     console.log(sessionStorage);
-    searchMovie(values)
+    searchMovie(values);
   }
 
   return (

@@ -1,10 +1,6 @@
-function searchFilter(arrayData, search, isShort = false) {
-  let searchStr = search.toLowerCase();
-let filterRes = arrayData.filter((item) => {
-    return `${item.nameRU} ${item.nameEN} ${item.country} ${item.director} ${item.year}`
-      .toLowerCase()
-      .includes(searchStr);
-
+function searchFilter(arrayData, searchQuery, isShort = false) {
+  let filterRes = arrayData.filter((movie) => {
+    return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
   });
   if (isShort) {
     filterRes = filterRes.filter((item) => {
