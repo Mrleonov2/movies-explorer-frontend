@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, useHistory, Link } from "react-router-dom";
+import { Route, useHistory, Switch } from "react-router-dom";
 import { Header } from "../Header/Header";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
@@ -9,38 +9,59 @@ import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { Popup } from "../Popup/Popup";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
-import { Footer } from "../Footer/Footer";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { mainApi } from "../../utils/MainApi.js";
-import { moviesApi } from "../../utils/MoviesApi.js";
 import * as auth from "../../utils/auth.js";
-import { searchFilter } from "../../utils/SearchFilter";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isOpenPopup, setIsPopupOpen] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState({
-    name: "Михаил",
-    email: "leonov2002@mail.ru",
+    name: "",
+    email: "",
   });
 
-  const [resMessage, setResMessage] = useState("");
-  const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-
-  const [change, setChange] = useState({});
   const history = useHistory();
+  //Автологин
   useEffect(() => {
-    if(loggedIn){
-      setMovies(sessionStorage.getItem("moviesData"));
-    }
+    handleTokenCheck();
   }, []);
+
+    //Получение данных пользователя
+    useEffect(() => {
+      if (loggedIn) {
+        mainApi
+          .getProfile()
+          .then((res) => setCurrentUser(res))
+          .catch((e) => {
+            setLoggedIn(false);
+            // history.push("/signin");
+          });
+      }
+    }, [loggedIn, history]);
+    //Получение сохраненных фильмов
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi.getSavedFilms().then((moviesData) => {
+        const ownSavedMovies = moviesData.filter(
+          (movie) => movie.owner === currentUser._id
+        );
+        sessionStorage.setItem("savedMovies", JSON.stringify(ownSavedMovies));
+        setSavedMovies(ownSavedMovies);
+      }).catch((err)=> console.log(err))
+    }
+  }, [currentUser._id, setSavedMovies]);
+
+  
+
   function handlePopupClick() {
     setIsPopupOpen(!isOpenPopup);
   }
   function signOut() {
     setLoggedIn(false);
-    history.push("/sign-in");
+    history.push("/");
+    mainApi.logOut()
   }
   function handleTokenCheck() {
     auth
@@ -53,6 +74,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        setLoggedIn(false);
       });
   }
   function handleUpdateProfile(userData) {
@@ -65,28 +87,29 @@ function App() {
         console.log(err);
       });
   }
-  function handleLogin() {}
-  function handleRegister() {}
-
-  function handleSaveMovie() {}
-
-  function handleSearch(search) {
-    moviesApi
-      .getMovies()
+  function handleLogin({ email, password }) {
+    auth
+      .authorize({ email, password })
       .then((res) => {
-        setChange(search);
-        setLoading(true);
-        setMovies(
-          searchFilter(res, search.search, JSON.parse(search.isShortFilms))
-        );
-  sessionStorage.setItem("moviesData", JSON.stringify(movies));
-    
+        if (!res.token) {
+          return;
+        }
+        auth.checkToken();
 
-
-        console.log(movies);
+        setLoggedIn(true);
+        history.push("/");
       })
-      .then(() => {
-        setLoading(false);
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  function handleRegister({ name, email, password }) {
+    auth
+      .register({ name, email, password })
+      .then((res) => {
+        if (res) {
+          history.push("/sign-in");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -96,6 +119,7 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
+      <Switch>
         <Route exact path="/">
           <Header
             loggedIn={loggedIn}
@@ -104,34 +128,33 @@ function App() {
           />
           <Main loggedIn={loggedIn} />
         </Route>
-        <Route path="/movies">
+        <ProtectedRoute path="/movies" loggedIn={loggedIn}>
           <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-          <Movies
-            movies={movies}
-            isLoading={isLoading}
-            searchMovie={handleSearch}
-            change={change}
-          />
-        </Route>
-        <Route path="/saved-movies">
+          <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} />
+        </ProtectedRoute>
+        <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
           <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
           <SavedMovies
-          movies={savedMovies}   
-            isLoading={isLoading}
-            // searchMovie={handleSavedSearch}
-            
+            savedMovies={savedMovies}
+            setSavedMovies={setSavedMovies}
           />
-        </Route>
-        <Route path="/profile">
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile" loggedIn={loggedIn}>
           <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
           <Profile editProfile={handleUpdateProfile} logOut={signOut} />
+        </ProtectedRoute>
+        <Route path="/signin">
+          <Login onLogin={handleLogin} />
         </Route>
-        <Route path="/signin">{<Login onLogin={handleLogin} />}</Route>
-        <Route path="/signup">{<Register onRegister={handleRegister} />}</Route>
-        <Route path="/404">
+        <Route path="/signup">
+          <Register onRegister={handleRegister} />
+        </Route>
+        <Route path="*">
           <NotFoundPage />
         </Route>
-        <Popup isOpen={isOpenPopup} onClose={handlePopupClick}></Popup>
+        
+        </Switch>
+        <Popup isOpen={isOpenPopup} onClose={handlePopupClick} />
       </CurrentUserContext.Provider>
     </div>
   );

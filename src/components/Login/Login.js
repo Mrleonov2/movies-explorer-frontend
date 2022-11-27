@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
-import React, { useCallback ,useState} from "react";
-export function Login({onLogin}) {
+import React, { useCallback, useState } from "react";
+export function Login({ onLogin }) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -32,13 +32,20 @@ export function Login({onLogin}) {
   return (
     <>
       <section className="register">
-        <form className="register__container" name="login" onSubmit={handleSubmit}>
+        <form
+          className="register__container"
+          name="login"
+          onSubmit={handleSubmit}
+        >
           <Link to="/" className="register__logo">
             <img src={headerLogo} alt="логотип проекта Movie-Explorer" />
           </Link>
           <h2 className="register__title">Рады видеть!</h2>
           <div className="register__input-container">
-            <label className="register__input-title" for="login__input-email">
+            <label
+              className="register__input-title"
+              htmlFor="login__input-email"
+            >
               E-mail
               <input
                 className="register__input"
@@ -56,7 +63,7 @@ export function Login({onLogin}) {
           <div className="register__input-container">
             <label
               className="register__input-title"
-              for="login__input-password"
+              htmlFor="login__input-password"
             >
               Пароль
               <input
@@ -64,10 +71,11 @@ export function Login({onLogin}) {
                 type="password"
                 id="login__input-password"
                 placeholder="Пароль"
-                name="Пароль"
+                name="password"
                 value={values.password}
                 onChange={handleChange}
-                required
+                required 
+                autocomplete="on"
               />
             </label>
             <div className="register__input-error">{errors.password}</div>

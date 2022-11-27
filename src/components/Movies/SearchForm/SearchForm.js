@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-export function SearchForm({ searchMovie }) {
-  const [values, setValues] = React.useState({
+export function SearchForm({ searchHandler }) {
+  const [values, setValues] = useState({
     isShortFilms: false,
     search: "",
   });
@@ -25,7 +25,7 @@ export function SearchForm({ searchMovie }) {
     sessionStorage.savedResult = values.search;
     sessionStorage.switchState = values.isShortFilms;
     console.log(sessionStorage);
-    searchMovie(values);
+    searchHandler(values);
   }
 
   return (

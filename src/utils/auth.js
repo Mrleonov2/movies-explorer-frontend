@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.movies.leonov.nomorepartiesxyz.ru";
+import { BASE_URL } from "./constants";
 
 const checkResponse = (response) => {
   console.log("response ok: ", response);
@@ -10,14 +10,13 @@ const checkResponse = (response) => {
     throw err;
   });
 };
-export const register = ({  email, password, name }) => {
+export const register = ({ email, password, name }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      credentials: "include",
+      "Accept": "application/json",
     },
     body: JSON.stringify({ password, email, name }),
   }).then(checkResponse);
@@ -26,10 +25,10 @@ export const authorize = ({ password, email }) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     credentials: "include",
+
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      credentials: "include",
+      "Accept": "application/json",
     },
     body: JSON.stringify({ password, email }),
   }).then(checkResponse);
@@ -40,8 +39,7 @@ export const checkToken = () => {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      credentials: "include",
+      "Accept": "application/json",
     },
-  }).then((res) => res.json());
+  }).then(checkResponse);
 };

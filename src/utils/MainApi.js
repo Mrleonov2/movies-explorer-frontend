@@ -1,3 +1,4 @@
+import { BASE_URL } from "./constants";
 class MainApi {
   constructor({ baseUrl }) {
     this._baseUrl = baseUrl;
@@ -5,6 +6,7 @@ class MainApi {
   _headers() {
     return {
       "Content-Type": "application/json",
+      Accept: "application/json",
     };
   }
 
@@ -32,6 +34,13 @@ class MainApi {
         email,
         name,
       }),
+    }).then(this._checkResponse);
+  }
+  logOut() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: "GET",
+      credentials: "include",
+      headers: this._headers(),
     }).then(this._checkResponse);
   }
   SaveMovie(
@@ -67,8 +76,8 @@ class MainApi {
     }).then(this._checkResponse);
   }
 
-  removeMovie(id) {
-    return fetch(`${this._baseUrl}/movies/${id}`, {
+  removeMovie(moviesId) {
+    return fetch(`${this._baseUrl}/movies/${moviesId}`, {
       method: "DELETE",
       credentials: "include",
       headers: this._headers(),
@@ -83,7 +92,7 @@ class MainApi {
   }
 }
 const mainApi = new MainApi({
-  baseUrl: "https://api.movies.leonov.nomorepartiesxyz.ru",
+  baseUrl: BASE_URL,
 });
 
 export { mainApi };

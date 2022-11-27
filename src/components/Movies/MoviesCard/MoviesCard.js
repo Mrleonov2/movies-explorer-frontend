@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import imgSaveFilm from "../../../images/img-save-film.svg";
 import imgFilm from "../../../images/photo.jpg";
 import imgDelFilm from "../../../images/img-del-film.svg";
@@ -6,14 +6,21 @@ import imgDelFilm from "../../../images/img-del-film.svg";
 export function MoviesCard({
   item,
   isActive,
-  isSaved,
-  isInactive,
+  isSavedPage,
   saveMovie,
   delMovie,
+  savedMovies
 }) {
   const [active, setActive] = useState(false);
-  const [saved, setSaved] = useState(isSaved);
-  const [inactive, setInactive] = useState(isInactive);
+  const [saved, setSaved] = useState(isSavedPage);
+  useEffect(() => {
+    // окрашиваем кнопку лайка, если он фильм нашелся в сохраненных
+    if(savedMovies){
+    if (savedMovies.some((movie) => movie.movieId === item.id)) {
+      setActive(true);
+    }}
+  }, [savedMovies, item.id]);
+
   function saveMovie() {
     console.log(item);
     setActive(!active);

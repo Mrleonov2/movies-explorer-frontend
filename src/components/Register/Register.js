@@ -7,9 +7,10 @@ export function Register({onRegister}) {
   const [isValid, setIsValid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!values.password || !values.email) {
+    if (!values.password || !values.email || !values.name) {
       return;
     }
+    console.log(values)
     onRegister(values);
   };
   const handleChange = (event) => {

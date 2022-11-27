@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SearchForm } from "../Movies/SearchForm/SearchForm";
 import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
+import { searchFilter } from "../../utils/SearchFilter";
 
-export function SavedMovies({ loggedIn, movies ,searchMovie}) {
+export function SavedMovies({ savedMovies }) {
+
+  const [moviesForRender, setMoviesForRender] = useState(savedMovies || []);
+ 
+useEffect(()=>{setMoviesForRender(savedMovies)},[savedMovies])
+function searchHandler(search) {
+  setMoviesForRender(searchFilter(moviesForRender,search.search,JSON.parse(search.isShortFilms)))
+}
   return (
     <>
       <main className="content">
-        <SearchForm searchMovie={searchMovie}/>
+        <SearchForm searchHandler={searchHandler}/>
         <MoviesCardList
-          isSaved={true}
-          isInactive={false}
-          savedMovies={movies}
+          isSavedPage={true}
+          allMovies={setMoviesForRender}
         />
       </main>
       <Footer />

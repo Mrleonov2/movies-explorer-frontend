@@ -76,7 +76,7 @@
   visibility: visible;
   display: flex;
   align-items: center;
-  background-color: #fafafa;
+  background-color: transparent;
 }
 
 .header__account_hidden {
