@@ -28,40 +28,43 @@ function App() {
     handleTokenCheck();
   }, []);
 
-    //Получение данных пользователя
-    useEffect(() => {
-      if (loggedIn) {
-        mainApi
-          .getProfile()
-          .then((res) => setCurrentUser(res))
-          .catch((e) => {
-            setLoggedIn(false);
-            // history.push("/signin");
-          });
-      }
-    }, [loggedIn, history]);
-    //Получение сохраненных фильмов
+  //Получение данных пользователя
   useEffect(() => {
     if (loggedIn) {
-      mainApi.getSavedFilms().then((moviesData) => {
-        const ownSavedMovies = moviesData.filter(
-          (movie) => movie.owner === currentUser._id
-        );
-        sessionStorage.setItem("savedMovies", JSON.stringify(ownSavedMovies));
-        setSavedMovies(ownSavedMovies);
-      }).catch((err)=> console.log(err))
+      mainApi
+        .getProfile()
+        .then((res) => setCurrentUser(res))
+        .catch((e) => {
+          setLoggedIn(false);
+          // history.push("/signin");
+        });
+    }
+  }, [loggedIn, history]);
+  //Получение сохраненных фильмов
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getSavedFilms()
+        .then((moviesData) => {
+          const ownSavedMovies = moviesData.filter(
+            (movie) => movie.owner === currentUser._id
+          );
+          
+          sessionStorage.setItem("savedMovies", JSON.stringify(ownSavedMovies));
+          setSavedMovies(ownSavedMovies);
+          console.log(ownSavedMovies)
+        })
+        .catch((err) => console.log(err));
     }
   }, [currentUser._id, setSavedMovies]);
 
-  
-
-  function handlePopupClick() {
+  const handlePopupClick = () => {
     setIsPopupOpen(!isOpenPopup);
-  }
+  };
   function signOut() {
     setLoggedIn(false);
     history.push("/");
-    mainApi.logOut()
+    mainApi.logOut();
   }
   function handleTokenCheck() {
     auth
@@ -69,7 +72,7 @@ function App() {
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          history.push("/");
+          // history.push("/");
         }
       })
       .catch((err) => {
@@ -97,7 +100,7 @@ function App() {
         auth.checkToken();
 
         setLoggedIn(true);
-        history.push("/");
+        history.push("/movies");
       })
       .catch((err) => {
         console.log(err);
@@ -119,40 +122,39 @@ function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-      <Switch>
-        <Route exact path="/">
-          <Header
-            loggedIn={loggedIn}
-            handlePopupClick={handlePopupClick}
-            isHeaderMain={true}
-          />
-          <Main loggedIn={loggedIn} />
-        </Route>
-        <ProtectedRoute path="/movies" loggedIn={loggedIn}>
-          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-          <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} />
-        </ProtectedRoute>
-        <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
-          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-          <SavedMovies
-            savedMovies={savedMovies}
-            setSavedMovies={setSavedMovies}
-          />
-        </ProtectedRoute>
-        <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-          <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-          <Profile editProfile={handleUpdateProfile} logOut={signOut} />
-        </ProtectedRoute>
-        <Route path="/signin">
-          <Login onLogin={handleLogin} />
-        </Route>
-        <Route path="/signup">
-          <Register onRegister={handleRegister} />
-        </Route>
-        <Route path="*">
-          <NotFoundPage />
-        </Route>
-        
+        <Switch>
+          <Route exact path="/">
+            <Header
+              loggedIn={loggedIn}
+              handlePopupClick={handlePopupClick}
+              isHeaderMain={true}
+            />
+            <Main loggedIn={loggedIn} />
+          </Route>
+          <ProtectedRoute path="/movies" loggedIn={loggedIn}>
+            <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
+            <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} />
+          </ProtectedRoute>
+          <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
+            <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
+            <SavedMovies
+              savedMovies={savedMovies}
+              setSavedMovies={setSavedMovies}
+            />
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+            <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
+            <Profile editProfile={handleUpdateProfile} logOut={signOut} />
+          </ProtectedRoute>
+          <Route path="/signin">
+            <Login onLogin={handleLogin} />
+          </Route>
+          <Route path="/signup">
+            <Register onRegister={handleRegister} />
+          </Route>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
         </Switch>
         <Popup isOpen={isOpenPopup} onClose={handlePopupClick} />
       </CurrentUserContext.Provider>

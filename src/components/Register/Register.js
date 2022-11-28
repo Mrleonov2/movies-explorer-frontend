@@ -46,7 +46,7 @@ export function Register({onRegister}) {
                 id="register__input-name"
                 placeholder="Имя"
                 name="name"
-                value={values.name}
+                value={values.name || ''}
                 onChange={handleChange}
                 required
               />
@@ -62,7 +62,7 @@ export function Register({onRegister}) {
                 name="email"
                 id="register__input-email"
                 placeholder="Электронная почта"
-                value={values.email}
+                value={values.email || ''}
                 onChange={handleChange}
                 required
               />
@@ -78,7 +78,7 @@ export function Register({onRegister}) {
                 placeholder="Пароль"
                 type="password"
                 name="password"
-                value={values.password}
+                value={values.password || ''}
                 onChange={handleChange}
                 required
               />

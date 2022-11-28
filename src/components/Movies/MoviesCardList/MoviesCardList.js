@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MoviesCard } from "../MoviesCard/MoviesCard";
 import { Preloader } from "../Preloader/Preloader";
 
@@ -7,7 +7,9 @@ export function MoviesCardList({
   allMovies,
   isLoading,
   MoreBtn,
-  savedMovies
+  savedMovies,
+  onSaveHandler,
+  onDeleteHandler,
 }) {
   return (
     <section className="card-list__section">
@@ -17,23 +19,20 @@ export function MoviesCardList({
         }`}
       >
         {allMovies &&
-          allMovies.map((card, ind) => (
+          allMovies.map((card) => (
             <MoviesCard
               item={card}
-              key={ind}
+              key={card.id || card.movieId}
+              onDeleteHandler={onDeleteHandler}
+              onSaveHandler={onSaveHandler}
               isSavedPage={isSavedPage}
-              movId={card.id}
               savedMovies={savedMovies}
             />
           ))}
         {isLoading && <Preloader />}
         {/* <h2>Ничего не найдено</h2> */}
       </ul>
-      <div className="card-list__more">
-        {!isSavedPage && (
-            <MoreBtn/>
-          )}
-      </div>
+      <div className="card-list__more">{!isSavedPage && <MoreBtn />}</div>
     </section>
   );
 }

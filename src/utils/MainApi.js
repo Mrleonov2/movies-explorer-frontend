@@ -1,4 +1,5 @@
 import { BASE_URL } from "./constants";
+import { MOVIES_URL} from "./constants";
 class MainApi {
   constructor({ baseUrl }) {
     this._baseUrl = baseUrl;
@@ -43,21 +44,20 @@ class MainApi {
       headers: this._headers(),
     }).then(this._checkResponse);
   }
-  SaveMovie(
+  saveMovie({
     country,
     director,
     duration,
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
-    thumbnail,
-    movieId
-  ) {
+    id
+  }) {
     return fetch(`${this._baseUrl}/movies`, {
-      method: "PATCH",
+      method: "POST",
       credentials: "include",
       headers: this._headers(),
       body: JSON.stringify({
@@ -66,12 +66,12 @@ class MainApi {
         duration,
         year,
         description,
-        image,
-        trailer,
+        image:'https://api.nomoreparties.co' + image.url,
+        trailerLink,
         nameRU,
         nameEN,
-        thumbnail,
-        movieId,
+        thumbnail:'https://api.nomoreparties.co' + image.formats.thumbnail.url,
+        movieId: id,
       }),
     }).then(this._checkResponse);
   }

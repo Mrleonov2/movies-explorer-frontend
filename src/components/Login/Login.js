@@ -53,7 +53,7 @@ export function Login({ onLogin }) {
                 id="login__input-email"
                 placeholder="Электронная почта"
                 name="email"
-                value={values.email}
+                value={values.email || ''}
                 onChange={handleChange}
                 required
               />
@@ -72,10 +72,10 @@ export function Login({ onLogin }) {
                 id="login__input-password"
                 placeholder="Пароль"
                 name="password"
-                value={values.password}
+                value={values.password || ''}
                 onChange={handleChange}
                 required 
-                autocomplete="on"
+                autocomplete="off"
               />
             </label>
             <div className="register__input-error">{errors.password}</div>

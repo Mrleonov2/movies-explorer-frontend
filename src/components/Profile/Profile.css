@@ -77,7 +77,7 @@
   line-height: 13px;
   text-align: right;
   border: none;
-  width: 50%;
+  width: calc(80%);
 }
 .profile__input:focus {
   outline: 1px solid#4285f4;

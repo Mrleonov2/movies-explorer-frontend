@@ -88,6 +88,8 @@
   background-color: transparent;
   padding: 0;
   left: 22px;
+  opacity: 0.6;
+  cursor: pointer;
 }
 
 .movies-card__btn_active {
@@ -101,12 +103,11 @@
   .movies-card__btn {
     bottom: 36px;
     left: calc(100% - 26px);
+    
   }
 }
 
 .movies-card__btn_like:hover {
-  opacity: 0.6;
-  cursor: pointer;
   background: url("../../../images/img-save-film.svg") center/cover;
 }
 .movies-card__link {

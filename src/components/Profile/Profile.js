@@ -6,7 +6,7 @@ export function Profile({ editProfile, logOut }) {
   const [isValid, setIsValid] = React.useState(false);
   const [values, setValues] = React.useState({});
   const isMatch =
-    values.name === currentUser.name || values.email === currentUser.email;
+    values.name === currentUser.name && values.email === currentUser.email;
   useEffect(() => {
     setValues(currentUser);
   }, [currentUser]);
@@ -20,11 +20,11 @@ export function Profile({ editProfile, logOut }) {
     console.log(values);
   };
   const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!isValid || isMatch) {
+    if (isValid && !isMatch) {
+      editProfile(values);
+    } else {
       return;
     }
-    editProfile(values);
   };
 
   return (
