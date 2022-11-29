@@ -1,4 +1,4 @@
-function searchFilter(movies, searchQuery, isShort = false) {
+export const searchFilter = (movies, searchQuery, isShort = false) => {
   let filterRes = movies.filter((movie) => {
     return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
   });
@@ -9,9 +9,14 @@ function searchFilter(movies, searchQuery, isShort = false) {
   }
 
   return filterRes;
-}
-// export const findOnlyShortMovies = (movies) => {
-//   return movies.filter((movie) => movie.duration < MAX_DURATION_SHORT_FILM);
-// };
+};
 
-export { searchFilter };
+export const filterMovies = (searchQuery, moviesArray) => {
+  return moviesArray.filter((movie) =>
+    movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+};
+
+export const findOnlyShortMovies = (movies) => {
+  return movies.filter((movie) => movie.duration <= 40);
+};

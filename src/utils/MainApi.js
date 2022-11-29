@@ -1,5 +1,4 @@
 import { BASE_URL } from "./constants";
-import { MOVIES_URL} from "./constants";
 class MainApi {
   constructor({ baseUrl }) {
     this._baseUrl = baseUrl;

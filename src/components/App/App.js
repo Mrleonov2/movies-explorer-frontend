@@ -49,10 +49,9 @@ function App() {
           const ownSavedMovies = moviesData.filter(
             (movie) => movie.owner === currentUser._id
           );
-          
+
           sessionStorage.setItem("savedMovies", JSON.stringify(ownSavedMovies));
           setSavedMovies(ownSavedMovies);
-          console.log(ownSavedMovies)
         })
         .catch((err) => console.log(err));
     }

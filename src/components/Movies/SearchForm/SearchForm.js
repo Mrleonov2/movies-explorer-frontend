@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
 
-export function SearchForm({ searchHandler }) {
+export function SearchForm({
+  searchHandler,
+  checkbox,
+  setCheckbox,
+  searchQuery,
+}) {
   const [values, setValues] = useState({
-    isShortFilms: false,
     search: "",
   });
 
   useEffect(() => {
-    setValues({
-      search: sessionStorage.savedResult || "",
-      isShortFilms: JSON.parse(sessionStorage.switchState || false),
-    });
-  }, []);
+    // отображаем последний запрос, если он есть
+    if (searchQuery) {
+      setValues({ ...values, search: searchQuery });
+    }
+  }, [searchQuery, setValues]);
 
-  function handleChange(event) {
+  const onClickCheckBox = () => setCheckbox(!checkbox);
+  const handleChange = (event) => {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.value;
     const name = target.name;
     setValues({ ...values, [name]: value });
     console.log(values);
-  }
+  };
 
-  function handleSubmit(event) {
-    sessionStorage.savedResult = values.search;
-    sessionStorage.switchState = values.isShortFilms;
-    console.log(sessionStorage);
-    searchHandler(values);
-  }
+  const handleSubmit = (event) => {
+    searchHandler(values.search, checkbox);
+  };
 
   return (
     <section className="search-section">
@@ -37,7 +39,7 @@ export function SearchForm({ searchHandler }) {
             type="search"
             name="search"
             placeholder="Фильм"
-            value={values.search}
+            value={values.search || ""}
             onChange={handleChange}
             required
           />
@@ -52,8 +54,8 @@ export function SearchForm({ searchHandler }) {
             className="search-switch"
             type="checkbox"
             name="isShortFilms"
-            onChange={handleChange}
-            checked={values.isShortFilms}
+            checked={checkbox}
+            onChange={onClickCheckBox}
           />
           <span className="search-circle"></span>
         </label>

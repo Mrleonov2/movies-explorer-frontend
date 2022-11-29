@@ -21,14 +21,7 @@ export function Register({onRegister}) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
   };
-  // const resetForm = useCallback(
-  //   (newValues = {}, newErrors = {}, newIsValid = false) => {
-  //     setValues(newValues);
-  //     setErrors(newErrors);
-  //     setIsValid(newIsValid);
-  //   },
-  //   [setValues, setErrors, setIsValid]
-  // );
+
   return (
     <section className="register">
       <form className="register__container" name="register" onSubmit={handleSubmit}>

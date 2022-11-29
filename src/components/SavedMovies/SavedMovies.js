@@ -4,9 +4,11 @@ import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
 import { searchFilter } from "../../utils/SearchFilter";
 import { mainApi } from "../../utils/MainApi";
-export function SavedMovies({ savedMovies ,setSavedMovies}) {
+import { queries } from "@testing-library/react";
+export function SavedMovies({ savedMovies, setSavedMovies }) {
   const [moviesForRender, setMoviesForRender] = useState(savedMovies || []);
-
+  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
+  const [resultMessage, setResultMessage] = useState("");
   useEffect(() => {
     setMoviesForRender(savedMovies);
   }, [savedMovies]);
@@ -23,20 +25,29 @@ export function SavedMovies({ savedMovies ,setSavedMovies}) {
       .catch((e) => console.log(e));
   };
 
-  function searchHandler(search) {
-    setMoviesForRender(
-      searchFilter(
-        moviesForRender,
-        search.search,
-        JSON.parse(search.isShortFilms)
-      )
-    );
+  function searchHandler(query, shortFilmsCheck) {
+    // фильтруем
+    const filteredMovies = searchFilter(savedMovies, query, shortFilmsCheck);
+    if (filteredMovies.length === 0) {
+      setMoviesForRender([]);
+      setResultMessage("Ничего не найдено");
+    } else if (query.length === 0) {
+      setResultMessage("Запрос не может быть пустым");
+    } else {
+      setMoviesForRender(filteredMovies);
+      setResultMessage("");
+    }
   }
 
   return (
     <>
       <main className="content">
-        <SearchForm searchHandler={searchHandler} />
+        <SearchForm
+          searchHandler={searchHandler}
+          checkbox={shortFilmsCheck}
+          setCheckbox={setShortFilmsCheck}
+        />
+        {resultMessage && <p className="movies__message">{resultMessage}</p>}
         <MoviesCardList
           isSavedPage={true}
           allMovies={moviesForRender}

@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { SearchForm } from "../Movies/SearchForm/SearchForm";
+import { SearchForm } from "./SearchForm/SearchForm";
 import { MoviesCardList } from "./MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
-import { searchFilter } from "../../utils/SearchFilter";
+import { filterMovies, findOnlyShortMovies } from "../../utils/SearchFilter";
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
 import screenWidth from "../../utils/getBroserWidth";
 
 export function Movies({ savedMovies, setSavedMovies }) {
   const [isLoading, setLoading] = useState(false);
-  const [resMessage, setResMessage] = useState("");
-
   const [isMobile, setIsMobile] = useState(false);
   let cardsPerPage = isMobile ? 5 : 7;
   const [next, setNext] = useState(cardsPerPage);
-  const [arrayForHoldingCards, setArrayForHoldingCards] = useState(
-    savedMovies || []
-  );
- 
+  const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
   const width = screenWidth();
   const cardsToShow = arrayForHoldingCards.slice(0, next);
-  let allMovies = localStorage.getItem("allMoviesData");
-  useEffect(() => {
-    setArrayForHoldingCards(savedMovies);
-  }, []);
+  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [resMessage, setResMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
+  let allMovies = sessionStorage.getItem("allMoviesData");
 
   useEffect(() => {
     if (width < 760) {
@@ -33,14 +30,37 @@ export function Movies({ savedMovies, setSavedMovies }) {
     }
     console.log(width);
   }, [width]);
-  function updateWidth() {
-    if (width < 760) {
-      setIsMobile(false);
-    } else {
-      setIsMobile(true);
+  let filteredShortMovies = queryData.filteredMovies || [];
+  let filteredMovies = queryData.filteredMovies || [];
+
+  useEffect(() => {
+    if (queryData) {
+      setSearchQuery(queryData.searchQuery);
+      setShortFilmsCheck(queryData.isShortFilms);
     }
-    console.log(width);
-  }
+  }, []);
+  useEffect(() => {
+    shortFilmsCheck
+      ? setArrayForHoldingCards(filteredShortMovies)
+      : setArrayForHoldingCards(filteredMovies);
+  }, [shortFilmsCheck]);
+
+  useEffect(() => {
+    if (queryData) {
+      const updatedQueryData = queryData;
+      updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
+      sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
+    }
+  }, [shortFilmsCheck, queryData]);
+  useEffect(() => {
+    window.addEventListener("beforeunload", removeAllMoviesData);
+    return () => {
+      window.removeEventListener("beforeunload", removeAllMoviesData);
+    };
+  }, []);
+
+  const removeAllMoviesData = () => sessionStorage.removeItem("allMoviesData");
+
   const handleLoadMore = () => {
     setNext(next + cardsPerPage);
   };
@@ -54,16 +74,51 @@ export function Movies({ savedMovies, setSavedMovies }) {
       ))
     );
   };
-  async function searchHandler(search) {
-    moviesApi.getMovies().then((res) => {
+  async function searchHandler(searchQuery, isShortFilms) {
+    try {
       setLoading(true);
-      let result = searchFilter(
-        res,
-        search.search,
-        JSON.parse(search.isShortFilms)
+      if (!allMovies) {
+        const allMoviesData = await moviesApi.getMovies();
+        sessionStorage.setItem("allMoviesData", JSON.stringify(allMoviesData));
+        allMovies = sessionStorage.getItem("allMoviesData");
+      }
+      filteredMovies = filterMovies(searchQuery, JSON.parse(allMovies));
+      filteredShortMovies = findOnlyShortMovies(filteredMovies);
+      const queryData = {
+        filteredMovies,
+        filteredShortMovies,
+        searchQuery,
+        isShortFilms,
+      };
+      sessionStorage.setItem("queryData", JSON.stringify(queryData));
+      if (searchQuery.length === 0) {
+        setResMessage("запрос не может быть пустым");
+      }
+      
+      if (isShortFilms) {
+        setArrayForHoldingCards(filteredShortMovies);
+        setResMessage('');
+        if (filteredShortMovies.length === 0) {
+          setResMessage("Ничего не найдено");
+        }
+      } else {
+        setArrayForHoldingCards(filteredMovies);
+        setResMessage('');
+        if (filteredMovies.length === 0) {
+          setResMessage("Ничего не найдено");
+        }
+      }
+
+      setErrorMessage("");
+      setLoading(false);
+    } catch (err) {
+      setErrorMessage(
+        "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
       );
-      setArrayForHoldingCards(result);
-    }).then(()=>{setLoading(false)})
+      setArrayForHoldingCards([]);
+      console.log(err);
+      setLoading(false);
+    }
   }
 
   const saveMovie = (movie, likeHandler) => {
@@ -74,7 +129,8 @@ export function Movies({ savedMovies, setSavedMovies }) {
         setSavedMovies([...savedMovies, newMovie]);
         // меняем кнопку
         likeHandler(true);
-      }).catch((e) => console.log(e));
+      })
+      .catch((e) => console.log(e));
   };
   const deleteMovie = (id, likeHandler) => {
     const inSavedMovies = savedMovies.find((movie) => movie.movieId === id);
@@ -90,12 +146,20 @@ export function Movies({ savedMovies, setSavedMovies }) {
       .catch((e) => console.log(e));
   };
 
-
-
   return (
     <>
       <main content="content">
-        <SearchForm searchHandler={searchHandler} />
+        <SearchForm
+          searchHandler={searchHandler}
+          checkbox={shortFilmsCheck}
+          setCheckbox={setShortFilmsCheck}
+          searchQuery={searchQuery}
+        />
+        {errorMessage || resMessage ? (
+          <p className="movies__message">{resMessage || errorMessage}</p>
+        ) : (
+          <></>
+        )}
         <MoviesCardList
           isSavedPage={false}
           allMovies={cardsToShow}
@@ -103,7 +167,7 @@ export function Movies({ savedMovies, setSavedMovies }) {
           MoreBtn={MoreBtn}
           onSaveHandler={saveMovie}
           onDeleteHandler={deleteMovie}
-          savedMovies ={savedMovies}
+          savedMovies={savedMovies}
         />
       </main>
       <Footer />
