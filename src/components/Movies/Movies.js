@@ -13,16 +13,16 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
   let cardsPerPage = isMobile ? 5 : 7;
   const [next, setNext] = useState(cardsPerPage);
   const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
- 
   const cardsToShow = arrayForHoldingCards.slice(0, next);
-  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [resMessage, setResMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const width = screenWidth();
   const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
   let allMovies = sessionStorage.getItem("allMoviesData");
-
+  const [shortFilmsCheck, setShortFilmsCheck] = useState(
+    queryData.searchQuery || false
+  );
   useEffect(() => {
     if (width < 760) {
       setIsMobile(true);
@@ -48,13 +48,13 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
     }
   }, [shortFilmsCheck, errorMessage]);
 
-  // useEffect(() => {
-  //   if (queryData) {
-  //     const updatedQueryData = queryData;
-  //     updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
-  //     sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
-  //   }
-  // }, [shortFilmsCheck, queryData]);
+  useEffect(() => {
+    if (queryData) {
+      const updatedQueryData = queryData;
+      updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
+      sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
+    }
+  }, [shortFilmsCheck, queryData]);
   useEffect(() => {
     window.addEventListener("beforeunload", removeAllMoviesData);
     return () => {
