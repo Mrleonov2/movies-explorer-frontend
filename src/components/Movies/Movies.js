@@ -7,18 +7,19 @@ import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
 import screenWidth from "../../utils/getBroserWidth";
 
-export function Movies({ savedMovies, setSavedMovies }) {
+export function Movies({ savedMovies, setSavedMovies, logOut }) {
   const [isLoading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   let cardsPerPage = isMobile ? 5 : 7;
   const [next, setNext] = useState(cardsPerPage);
   const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
-  const width = screenWidth();
+ 
   const cardsToShow = arrayForHoldingCards.slice(0, next);
   const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [resMessage, setResMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const width = screenWidth();
   const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
   let allMovies = sessionStorage.getItem("allMoviesData");
 
@@ -40,18 +41,20 @@ export function Movies({ savedMovies, setSavedMovies }) {
     }
   }, []);
   useEffect(() => {
-    shortFilmsCheck
-      ? setArrayForHoldingCards(filteredShortMovies)
-      : setArrayForHoldingCards(filteredMovies);
-  }, [shortFilmsCheck]);
-
-  useEffect(() => {
-    if (queryData) {
-      const updatedQueryData = queryData;
-      updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
-      sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
+    if (!errorMessage) {
+      shortFilmsCheck
+        ? setArrayForHoldingCards(filteredShortMovies)
+        : setArrayForHoldingCards(filteredMovies);
     }
-  }, [shortFilmsCheck, queryData]);
+  }, [shortFilmsCheck, errorMessage]);
+
+  // useEffect(() => {
+  //   if (queryData) {
+  //     const updatedQueryData = queryData;
+  //     updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
+  //     sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
+  //   }
+  // }, [shortFilmsCheck, queryData]);
   useEffect(() => {
     window.addEventListener("beforeunload", removeAllMoviesData);
     return () => {
@@ -94,16 +97,16 @@ export function Movies({ savedMovies, setSavedMovies }) {
       if (searchQuery.length === 0) {
         setResMessage("запрос не может быть пустым");
       }
-      
+
       if (isShortFilms) {
         setArrayForHoldingCards(filteredShortMovies);
-        setResMessage('');
+        setResMessage("");
         if (filteredShortMovies.length === 0) {
           setResMessage("Ничего не найдено");
         }
       } else {
         setArrayForHoldingCards(filteredMovies);
-        setResMessage('');
+        setResMessage("");
         if (filteredMovies.length === 0) {
           setResMessage("Ничего не найдено");
         }
@@ -130,7 +133,10 @@ export function Movies({ savedMovies, setSavedMovies }) {
         // меняем кнопку
         likeHandler(true);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        logOut();
+        console.log(e);
+      });
   };
   const deleteMovie = (id, likeHandler) => {
     const inSavedMovies = savedMovies.find((movie) => movie.movieId === id);
@@ -143,7 +149,10 @@ export function Movies({ savedMovies, setSavedMovies }) {
           state.filter((m) => m._id !== inSavedMovies._id)
         );
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        logOut();
+        console.log(e);
+      });
   };
 
   return (

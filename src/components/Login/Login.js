@@ -68,7 +68,7 @@ export function Login({ onLogin }) {
                 value={values.password || ''}
                 onChange={handleChange}
                 required 
-                autocomplete="off"
+                autoComplete="off"
               />
             </label>
             <div className="register__input-error">{errors.password}</div>

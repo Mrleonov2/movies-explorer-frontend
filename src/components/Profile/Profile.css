@@ -99,11 +99,15 @@
   letter-spacing: 0px;
   text-align: center;
   margin-bottom: 16px;
-
   transition: opacity 0.3s ease-in-out;
   border: none;
 }
+.profile__edit-btn:disabled{
+  background-color: rgba(255, 0, 0, 0.5);
+  border-radius: 5px;
+  color:black;
 
+}
 .profile__edit-btn:hover {
   opacity: 0.6;
   cursor: pointer;

@@ -4,8 +4,7 @@ import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
 import { searchFilter } from "../../utils/SearchFilter";
 import { mainApi } from "../../utils/MainApi";
-import { queries } from "@testing-library/react";
-export function SavedMovies({ savedMovies, setSavedMovies }) {
+export function SavedMovies({ savedMovies, setSavedMovies, logOut }) {
   const [moviesForRender, setMoviesForRender] = useState(savedMovies || []);
   const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
@@ -22,7 +21,10 @@ export function SavedMovies({ savedMovies, setSavedMovies }) {
         setSavedMovies((state) => state.filter((m) => m._id !== movieId));
         setMoviesForRender((state) => state.filter((m) => m._id !== movieId));
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+      console.log(e)
+      logOut()
+      });
   };
 
   function searchHandler(query, shortFilmsCheck) {

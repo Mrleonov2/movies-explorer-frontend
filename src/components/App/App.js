@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, useHistory, Switch } from "react-router-dom";
+import { Route, useHistory, useLocation, Switch } from "react-router-dom";
 import { Header } from "../Header/Header";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
@@ -20,14 +20,24 @@ function App() {
     name: "",
     email: "",
   });
-
   const [savedMovies, setSavedMovies] = useState([]);
   const history = useHistory();
+  let location = useLocation();
   //Автологин
   useEffect(() => {
     handleTokenCheck();
   }, []);
-
+  //Запрет двойной авторизации
+  useEffect(() => {
+    if (
+      loggedIn &&
+      (location.pathname === "/signup" || location.pathname === "/signin")
+    ) {
+      history.push("/movies");
+    } else {
+      history.push(location.pathname);
+    }
+  }, [loggedIn, history, location.pathname]);
   //Получение данных пользователя
   useEffect(() => {
     if (loggedIn) {
@@ -36,7 +46,8 @@ function App() {
         .then((res) => setCurrentUser(res))
         .catch((e) => {
           setLoggedIn(false);
-          // history.push("/signin");
+          console.log(e);
+          history.push("/signin");
         });
     }
   }, [loggedIn, history]);
@@ -49,7 +60,6 @@ function App() {
           const ownSavedMovies = moviesData.filter(
             (movie) => movie.owner === currentUser._id
           );
-
           sessionStorage.setItem("savedMovies", JSON.stringify(ownSavedMovies));
           setSavedMovies(ownSavedMovies);
         })
@@ -63,7 +73,11 @@ function App() {
   function signOut() {
     setLoggedIn(false);
     history.push("/");
-    mainApi.logOut();
+    mainApi.logOut().catch((e) => {
+      console.log(e);
+    });
+    sessionStorage.removeItem("queryData");
+    sessionStorage.removeItem("savedMovies");
   }
   function handleTokenCheck() {
     auth
@@ -71,12 +85,11 @@ function App() {
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          // history.push("/");
         }
       })
       .catch((err) => {
         console.log(err);
-        setLoggedIn(false);
+        signOut();
       });
   }
   function handleUpdateProfile(userData) {
@@ -87,6 +100,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        signOut()
       });
   }
   function handleLogin({ email, password }) {
@@ -97,7 +111,6 @@ function App() {
           return;
         }
         auth.checkToken();
-
         setLoggedIn(true);
         history.push("/movies");
       })
@@ -110,7 +123,7 @@ function App() {
       .register({ name, email, password })
       .then((res) => {
         if (res) {
-          history.push("/sign-in");
+          handleLogin({email, password })
         }
       })
       .catch((err) => {
@@ -132,13 +145,14 @@ function App() {
           </Route>
           <ProtectedRoute path="/movies" loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-            <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} />
+            <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} logOut={signOut}/>
           </ProtectedRoute>
           <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
             <SavedMovies
               savedMovies={savedMovies}
               setSavedMovies={setSavedMovies}
+              logOut={signOut}
             />
           </ProtectedRoute>
           <ProtectedRoute path="/profile" loggedIn={loggedIn}>

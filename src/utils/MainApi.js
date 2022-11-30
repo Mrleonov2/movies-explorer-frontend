@@ -39,7 +39,7 @@ class MainApi {
   logOut() {
     return fetch(`${this._baseUrl}/signout`, {
       method: "GET",
-      credentials: "include",
+      credentials: 'include',
       headers: this._headers(),
     }).then(this._checkResponse);
   }
