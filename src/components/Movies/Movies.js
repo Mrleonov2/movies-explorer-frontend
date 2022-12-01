@@ -13,16 +13,14 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
   let cardsPerPage = isMobile ? 5 : 7;
   const [next, setNext] = useState(cardsPerPage);
   const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
-  const cardsToShow = arrayForHoldingCards.slice(0, next);
+let cardsToShow = arrayForHoldingCards.slice(0, next);
   const [searchQuery, setSearchQuery] = useState("");
   const [resMessage, setResMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const width = screenWidth();
   const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
   let allMovies = sessionStorage.getItem("allMoviesData");
-  const [shortFilmsCheck, setShortFilmsCheck] = useState(
-    queryData.searchQuery || false
-  );
+  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
   useEffect(() => {
     if (width < 760) {
       setIsMobile(true);
@@ -31,7 +29,7 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
     }
     console.log(width);
   }, [width]);
-  let filteredShortMovies = queryData.filteredMovies || [];
+  let filteredShortMovies = queryData.filteredShortMovies || [];
   let filteredMovies = queryData.filteredMovies || [];
 
   useEffect(() => {
@@ -41,12 +39,12 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
     }
   }, []);
   useEffect(() => {
-    if (!errorMessage) {
+ if(!errorMessage){
       shortFilmsCheck
         ? setArrayForHoldingCards(filteredShortMovies)
         : setArrayForHoldingCards(filteredMovies);
     }
-  }, [shortFilmsCheck, errorMessage]);
+  }, [shortFilmsCheck]);
 
   useEffect(() => {
     if (queryData) {
@@ -94,10 +92,6 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
         isShortFilms,
       };
       sessionStorage.setItem("queryData", JSON.stringify(queryData));
-      if (searchQuery.length === 0) {
-        setResMessage("запрос не может быть пустым");
-      }
-
       if (isShortFilms) {
         setArrayForHoldingCards(filteredShortMovies);
         setResMessage("");
@@ -163,6 +157,7 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
           checkbox={shortFilmsCheck}
           setCheckbox={setShortFilmsCheck}
           searchQuery={searchQuery}
+          isLoading={isLoading}
         />
         {errorMessage || resMessage ? (
           <p className="movies__message">{resMessage || errorMessage}</p>

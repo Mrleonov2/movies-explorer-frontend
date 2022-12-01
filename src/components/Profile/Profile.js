@@ -1,10 +1,11 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect , useState} from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 export function Profile({ editProfile, logOut }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [isValid, setIsValid] = React.useState(false);
-  const [values, setValues] = React.useState({});
+  const [isValid, setIsValid] = useState(false);
+  const [values, setValues] = useState({});
+  const [notify,setNotify] = useState('')
   const isMatch =
     values.name === currentUser.name && values.email === currentUser.email;
   useEffect(() => {
@@ -22,7 +23,9 @@ export function Profile({ editProfile, logOut }) {
   const handleSubmit = (event) => {
     if (isValid && !isMatch) {
       editProfile(values);
+      setNotify('Данные успешно обновлены');
     } else {
+      setNotify('Введенные данные некорректны');
       return;
     }
   };
@@ -51,6 +54,7 @@ export function Profile({ editProfile, logOut }) {
             onChange={handleChange}
           />
         </div>
+        <span className="profile__notify">{notify}</span>
       </form>
       <button
         className="profile__edit-btn"

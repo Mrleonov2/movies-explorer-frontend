@@ -5,11 +5,12 @@ export function SearchForm({
   checkbox,
   setCheckbox,
   searchQuery,
+  isLoading
 }) {
   const [values, setValues] = useState({
     search: "",
   });
-
+  const [errorText, setErrorText] = useState("");
   useEffect(() => {
     // отображаем последний запрос, если он есть
     if (searchQuery) {
@@ -26,8 +27,15 @@ export function SearchForm({
     console.log(values);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (e) => {
+    if (values.search == false) {
+      setErrorText("Запрос не может быть пустым");
+      return;
+    }
+    else{
     searchHandler(values.search, checkbox);
+    setErrorText("");
+  }
   };
 
   return (
@@ -41,13 +49,17 @@ export function SearchForm({
             placeholder="Фильм"
             value={values.search || ""}
             onChange={handleChange}
+            disabled={isLoading}
+            autoComplete="off"
             required
           />
         </form>
         <button className="search-btn" type="button" onClick={handleSubmit}>
           Найти
         </button>
+        <span className="search-form__error">{errorText}</span>
       </div>
+      
       <div>
         <label className="search-switch-container">
           <input
@@ -56,6 +68,7 @@ export function SearchForm({
             name="isShortFilms"
             checked={checkbox}
             onChange={onClickCheckBox}
+            disabled={isLoading}
           />
           <span className="search-circle"></span>
         </label>

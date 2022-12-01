@@ -29,13 +29,27 @@
   align-items: center;
   justify-content: space-between;
   align-self: stretch;
+  position:relative;
 }
 
 @media screen and (max-width: 420px) {
   .search-form-container {
     min-width: 262px;
+
   }
 }
+.search-form__error{
+  position: absolute;
+  text-align: center;
+  bottom: -20px;
+  white-space: nowrap;
+  width: auto;
+  color: red;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+
 
 .search-input:focus {
   outline: 1px solid #3456f3;
