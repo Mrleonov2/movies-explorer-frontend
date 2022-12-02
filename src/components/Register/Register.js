@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
-import React, { useCallback,useState } from "react";
-export function Register({onRegister}) {
+import React, { useCallback, useState } from "react";
+import { emailValid } from "../../utils/constants";
+export function Register({ onRegister, isLoading }) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -10,7 +11,7 @@ export function Register({onRegister}) {
     if (!values.password || !values.email || !values.name) {
       return;
     }
-    console.log(values)
+    console.log(values);
     onRegister(values);
   };
   const handleChange = (event) => {
@@ -24,7 +25,11 @@ export function Register({onRegister}) {
 
   return (
     <section className="register">
-      <form className="register__container" name="register" onSubmit={handleSubmit}>
+      <form
+        className="register__container"
+        name="register"
+        onSubmit={handleSubmit}
+      >
         <Link to="/" className="register__logo">
           <img src={headerLogo} alt="логотип проекта Movie-Explorer" />
         </Link>
@@ -39,8 +44,9 @@ export function Register({onRegister}) {
                 id="register__input-name"
                 placeholder="Имя"
                 name="name"
-                value={values.name || ''}
+                value={values.name || ""}
                 onChange={handleChange}
+                disabled={isLoading}
                 required
               />
             </label>
@@ -55,8 +61,10 @@ export function Register({onRegister}) {
                 name="email"
                 id="register__input-email"
                 placeholder="Электронная почта"
-                value={values.email || ''}
+                value={values.email || ""}
+                pattern={emailValid}
                 onChange={handleChange}
+                disabled={isLoading}
                 required
               />
             </label>
@@ -71,8 +79,9 @@ export function Register({onRegister}) {
                 placeholder="Пароль"
                 type="password"
                 name="password"
-                value={values.password || ''}
+                value={values.password || ""}
                 onChange={handleChange}
+                disabled={isLoading}
                 required
               />
             </label>
@@ -82,7 +91,7 @@ export function Register({onRegister}) {
         <button
           className="register__submit-btn"
           type="submit"
-          disabled={!isValid ? true : false}
+          disabled={!isValid || isLoading}
         >
           Зарегистрироваться
         </button>

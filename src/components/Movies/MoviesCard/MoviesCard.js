@@ -1,12 +1,11 @@
-import { isValidInputTimeValue } from "@testing-library/user-event/dist/utils";
-import React, { useState ,useEffect} from "react";
 
+import React, { useState, useEffect } from "react";
 export function MoviesCard({
   item,
   isSavedPage,
   onDeleteHandler,
   onSaveHandler,
-  savedMovies
+  savedMovies,
 }) {
   const [active, setActive] = useState(false);
   useEffect(() => {
@@ -16,9 +15,8 @@ export function MoviesCard({
     }
   }, [savedMovies, item.id]);
 
- 
   const handleSave = () => {
-console.log(item)
+    console.log(item);
     onSaveHandler(item, setActive);
   };
 
@@ -27,7 +25,6 @@ console.log(item)
     // так как ключи в объектах отличаются
     onDeleteHandler(item._id || item.id, setActive);
   };
-
 
   return (
     <li className={`movies-card`}>
@@ -39,9 +36,12 @@ console.log(item)
         ></button>
       ) : (
         <button
-          className={`movies-card__btn movies-card__btn_like ${active &&
-            "movies-card__btn_active"}`}
+
+          className={`movies-card__btn movies-card__btn_like_inactive ${
+            active && "movies-card__btn_like_active"
+          }`}
           type="button"
+          
           onClick={active ? handleDelete : handleSave}
         ></button>
       )}
@@ -58,7 +58,11 @@ console.log(item)
       >
         <img
           className="movies-card__img"
-          src={isSavedPage ? `${item.image}`: `https://api.nomoreparties.co/${item.image.url}`}
+          src={
+            isSavedPage
+              ? `${item.image}`
+              : `https://api.nomoreparties.co/${item.image.url}`
+          }
           alt="film-pic"
         />
       </a>

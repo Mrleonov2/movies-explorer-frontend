@@ -5,22 +5,29 @@ import { Footer } from "../Footer/Footer";
 import { filterMovies, findOnlyShortMovies } from "../../utils/SearchFilter";
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
-import screenWidth from "../../utils/getBroserWidth";
+import useGetBroserWidth from "../../utils/getBroserWidth";
+import {
+  DEFAULT_SERVER_ERROR,
+  MOBILE_RENDER_CARDS,
+  LAPTOP_RENDER_CARDS,
+  NOT_FOUND_MESSAGE
+} from "../../utils/constants";
 
 export function Movies({ savedMovies, setSavedMovies, logOut }) {
+  const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  let cardsPerPage = isMobile ? 5 : 7;
+  let cardsPerPage = isMobile ? MOBILE_RENDER_CARDS : LAPTOP_RENDER_CARDS;
   const [next, setNext] = useState(cardsPerPage);
-  const [arrayForHoldingCards, setArrayForHoldingCards] = useState([]);
-let cardsToShow = arrayForHoldingCards.slice(0, next);
+  let cardsToShow = arrayForHoldingCards.slice(0, next);
+  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [resMessage, setResMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const width = screenWidth();
+  const [resMessage, setResMessage] = useState("");
+  const width = useGetBroserWidth();
   const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
   let allMovies = sessionStorage.getItem("allMoviesData");
-  const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
+ 
   useEffect(() => {
     if (width < 760) {
       setIsMobile(true);
@@ -29,30 +36,30 @@ let cardsToShow = arrayForHoldingCards.slice(0, next);
     }
     console.log(width);
   }, [width]);
-  let filteredShortMovies = queryData.filteredShortMovies || [];
-  let filteredMovies = queryData.filteredMovies || [];
+  let filteredShortMovies = queryData?.filteredShortMovies || [];
+  let filteredMovies = queryData?.filteredMovies || [];
 
   useEffect(() => {
     if (queryData) {
-      setSearchQuery(queryData.searchQuery);
-      setShortFilmsCheck(queryData.isShortFilms);
+      setSearchQuery(queryData?.searchQuery);
+      setShortFilmsCheck(queryData?.isShortFilms);
     }
   }, []);
   useEffect(() => {
- if(!errorMessage){
-      shortFilmsCheck
-        ? setArrayForHoldingCards(filteredShortMovies)
-        : setArrayForHoldingCards(filteredMovies);
-    }
-  }, [shortFilmsCheck]);
-
-  useEffect(() => {
     if (queryData) {
       const updatedQueryData = queryData;
-      updatedQueryData.isOnlyShortFilms = shortFilmsCheck;
+      updatedQueryData.isShortFilms = shortFilmsCheck;
       sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
     }
   }, [shortFilmsCheck, queryData]);
+  useEffect(() => {
+    if (!errorMessage) {
+      shortFilmsCheck
+        ? setArrayForHoldingCards(filteredShortMovies) : setArrayForHoldingCards(filteredMovies);
+    }
+  }, [shortFilmsCheck]);
+
+  
   useEffect(() => {
     window.addEventListener("beforeunload", removeAllMoviesData);
     return () => {
@@ -89,29 +96,27 @@ let cardsToShow = arrayForHoldingCards.slice(0, next);
         filteredMovies,
         filteredShortMovies,
         searchQuery,
-        isShortFilms,
+        isShortFilms:isShortFilms,
       };
       sessionStorage.setItem("queryData", JSON.stringify(queryData));
       if (isShortFilms) {
         setArrayForHoldingCards(filteredShortMovies);
         setResMessage("");
         if (filteredShortMovies.length === 0) {
-          setResMessage("Ничего не найдено");
+          setResMessage(NOT_FOUND_MESSAGE);
         }
       } else {
         setArrayForHoldingCards(filteredMovies);
         setResMessage("");
         if (filteredMovies.length === 0) {
-          setResMessage("Ничего не найдено");
+          setResMessage(NOT_FOUND_MESSAGE);
         }
       }
 
       setErrorMessage("");
       setLoading(false);
     } catch (err) {
-      setErrorMessage(
-        "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
-      );
+      setErrorMessage(DEFAULT_SERVER_ERROR);
       setArrayForHoldingCards([]);
       console.log(err);
       setLoading(false);

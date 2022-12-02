@@ -83,24 +83,22 @@
   width: 14px;
   height: 12px;
   border: none;
-  background-color: #8b8b8b;
   padding: 0;
   left: 22px;
-  opacity: 0.6;
   cursor: pointer;
 }
-
-.movies-card__btn_active {
+.movies-card__btn_like_inactive{
   background: url("../../../images/img-save-film.svg") center/cover;
+  opacity: 0.2;
+}
+.movies-card__btn_like_active {
+  background: url("../../../images/img-save-film.svg") center/cover;
+  opacity: 1;
 }
 .movies-card__btn_del {
   background: url("../../../images/img-del-film.svg") center/cover;
 }
 
-
-.movies-card__btn_like:hover {
-  background: url("../../../images/img-save-film.svg") center/cover;
-}
 .movies-card__link {
   position: flex;
   height: 122px;

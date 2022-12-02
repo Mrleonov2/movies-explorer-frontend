@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
 import React, { useCallback, useState } from "react";
-export function Login({ onLogin }) {
+import { emailValid } from "../../utils/constants";
+export function Login({ onLogin, isLoading }) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -20,7 +21,6 @@ export function Login({ onLogin }) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
   };
-
 
   return (
     <>
@@ -46,8 +46,10 @@ export function Login({ onLogin }) {
                 id="login__input-email"
                 placeholder="Электронная почта"
                 name="email"
-                value={values.email || ''}
+                value={values.email || ""}
                 onChange={handleChange}
+                pattern={emailValid}
+                disabled={isLoading}
                 required
               />
             </label>
@@ -65,10 +67,11 @@ export function Login({ onLogin }) {
                 id="login__input-password"
                 placeholder="Пароль"
                 name="password"
-                value={values.password || ''}
+                value={values.password || ""}
                 onChange={handleChange}
-                required 
+                required
                 autoComplete="off"
+                disabled={isLoading}
               />
             </label>
             <div className="register__input-error">{errors.password}</div>
@@ -78,7 +81,7 @@ export function Login({ onLogin }) {
             <button
               className="register__submit-btn"
               type="submit"
-              disabled={!isValid ? true : false}
+              disabled={!isValid || isLoading}
             >
               Войти
             </button>

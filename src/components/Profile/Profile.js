@@ -1,11 +1,12 @@
 import React from "react";
-import { useEffect , useState} from "react";
+import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-export function Profile({ editProfile, logOut }) {
+import { emailValid } from "../../utils/constants";
+export function Profile({ editProfile, logOut, isLoading }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [isValid, setIsValid] = useState(false);
   const [values, setValues] = useState({});
-  const [notify,setNotify] = useState('')
+  const [notify, setNotify] = useState("");
   const isMatch =
     values.name === currentUser.name && values.email === currentUser.email;
   useEffect(() => {
@@ -23,9 +24,9 @@ export function Profile({ editProfile, logOut }) {
   const handleSubmit = (event) => {
     if (isValid && !isMatch) {
       editProfile(values);
-      setNotify('Данные успешно обновлены');
+      setNotify("Данные успешно обновлены");
     } else {
-      setNotify('Введенные данные некорректны');
+      setNotify("Введенные данные некорректны");
       return;
     }
   };
@@ -42,6 +43,7 @@ export function Profile({ editProfile, logOut }) {
             type="text"
             value={values.name}
             onChange={handleChange}
+            disabled={isLoading}
           />
         </div>
         <div className="profile__input-container">
@@ -52,6 +54,8 @@ export function Profile({ editProfile, logOut }) {
             type="email"
             value={values.email}
             onChange={handleChange}
+            pattern={emailValid}
+            disabled={isLoading}
           />
         </div>
         <span className="profile__notify">{notify}</span>
@@ -60,7 +64,7 @@ export function Profile({ editProfile, logOut }) {
         className="profile__edit-btn"
         type="button"
         onClick={handleSubmit}
-        disabled={!isValid ? true : false}
+        disabled={isLoading || !isValid}
       >
         Редактировать
       </button>

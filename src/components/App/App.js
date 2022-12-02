@@ -21,6 +21,7 @@ function App() {
     email: "",
   });
   const [savedMovies, setSavedMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   let location = useLocation();
   //Автологин
@@ -93,6 +94,7 @@ function App() {
       });
   }
   function handleUpdateProfile(userData) {
+    setIsLoading(true);
     mainApi
       .editProfile(userData)
       .then((updatedData) => {
@@ -100,10 +102,14 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        signOut()
+        signOut();
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
   function handleLogin({ email, password }) {
+    setIsLoading(true);
     auth
       .authorize({ email, password })
       .then((res) => {
@@ -116,18 +122,23 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   }
   function handleRegister({ name, email, password }) {
+    setIsLoading(true)
     auth
       .register({ name, email, password })
       .then((res) => {
         if (res) {
-          handleLogin({email, password })
+          handleLogin({ email, password });
         }
       })
       .catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -145,7 +156,11 @@ function App() {
           </Route>
           <ProtectedRoute path="/movies" loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-            <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies} logOut={signOut}/>
+            <Movies
+              savedMovies={savedMovies}
+              setSavedMovies={setSavedMovies}
+              logOut={signOut}
+            />
           </ProtectedRoute>
           <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
@@ -157,13 +172,17 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/profile" loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} handlePopupClick={handlePopupClick} />
-            <Profile editProfile={handleUpdateProfile} logOut={signOut} />
+            <Profile
+              editProfile={handleUpdateProfile}
+              logOut={signOut}
+              isLoading={isLoading}
+            />
           </ProtectedRoute>
           <Route path="/signin">
-            <Login onLogin={handleLogin} />
+            <Login onLogin={handleLogin} isLoading={isLoading} />
           </Route>
           <Route path="/signup">
-            <Register onRegister={handleRegister} />
+            <Register onRegister={handleRegister} isLoading={isLoading} />
           </Route>
           <Route path="*">
             <NotFoundPage />

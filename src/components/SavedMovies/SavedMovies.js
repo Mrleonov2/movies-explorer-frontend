@@ -4,6 +4,9 @@ import { MoviesCardList } from "../Movies/MoviesCardList/MoviesCardList.js";
 import { Footer } from "../Footer/Footer";
 import { searchFilter } from "../../utils/SearchFilter";
 import { mainApi } from "../../utils/MainApi";
+import {
+  NOT_FOUND_MESSAGE
+} from "../../utils/constants";
 export function SavedMovies({ savedMovies, setSavedMovies, logOut }) {
   const [moviesForRender, setMoviesForRender] = useState(savedMovies || []);
   const [shortFilmsCheck, setShortFilmsCheck] = useState(false);
@@ -32,7 +35,7 @@ export function SavedMovies({ savedMovies, setSavedMovies, logOut }) {
     const filteredMovies = searchFilter(savedMovies, query, shortFilmsCheck);
     if (filteredMovies.length === 0) {
       setMoviesForRender([]);
-      setResultMessage("Ничего не найдено");
+      setResultMessage(NOT_FOUND_MESSAGE);
     } else if (query.length === 0) {
       setResultMessage("Запрос не может быть пустым");
     } else {

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-function getBroserWidth() {
+function useGetBroserWidth() {
   const [width, setWidth] = useState(1280);
   useLayoutEffect(() => {
     const getWidth = () => {
@@ -25,4 +25,4 @@ function getBroserWidth() {
   }, []);
   return width;
 }
-export default getBroserWidth;
+export default useGetBroserWidth;
