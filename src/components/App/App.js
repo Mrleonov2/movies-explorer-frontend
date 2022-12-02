@@ -118,6 +118,7 @@ function App() {
       .catch((err) => {
         console.log(err);
         setProfileMessage({ content: err.message, status: false });
+        signOut();
       })
       .finally(() => {
         setIsLoading(false);
