@@ -211,11 +211,7 @@
   }
 }
 
-@media screen and (max-width: 480px) {
-  .register__input-list {
-    margin-bottom: 171px;
-  }
-}
+
 
 .register__log-in-btn:hover {
   opacity: 0.6;
@@ -228,5 +224,17 @@
 .register__input-list {
   margin-bottom: 134px;
   padding: 0;
+  position: relative;
 
+}
+@media screen and (max-width: 480px) {
+  .register__input-list {
+    margin-bottom: 171px;
+  }
+}
+.register__message-error {
+  padding: 5px;
+  position: absolute;
+  bottom: -60px;
+  color: red;
 }

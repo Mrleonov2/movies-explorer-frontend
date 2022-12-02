@@ -2,11 +2,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { emailValid } from "../../utils/constants";
-export function Profile({ editProfile, logOut, isLoading }) {
+export function Profile({ editProfile, logOut, isLoading, profileMessage }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [isValid, setIsValid] = useState(false);
   const [values, setValues] = useState({});
-  const [notify, setNotify] = useState("");
   const isMatch =
     values.name === currentUser.name && values.email === currentUser.email;
   useEffect(() => {
@@ -19,14 +18,11 @@ export function Profile({ editProfile, logOut, isLoading }) {
     const value = target.value;
     setValues({ ...values, [name]: value });
     setIsValid(target.closest("form").checkValidity());
-    console.log(values);
   };
   const handleSubmit = (event) => {
     if (isValid && !isMatch) {
       editProfile(values);
-      setNotify("Данные успешно обновлены");
     } else {
-      setNotify("Введенные данные некорректны");
       return;
     }
   };
@@ -44,6 +40,8 @@ export function Profile({ editProfile, logOut, isLoading }) {
             value={values.name}
             onChange={handleChange}
             disabled={isLoading}
+            minLength="2"
+            maxLength="30"
           />
         </div>
         <div className="profile__input-container">
@@ -58,13 +56,13 @@ export function Profile({ editProfile, logOut, isLoading }) {
             disabled={isLoading}
           />
         </div>
-        <span className="profile__notify">{notify}</span>
+        {<span className={`profile__message ${profileMessage.status ? 'profile__message_success' : 'profile__message_failed'}`}>{profileMessage.content}</span>}
       </form>
       <button
         className="profile__edit-btn"
         type="button"
         onClick={handleSubmit}
-        disabled={isLoading || !isValid}
+        disabled={isLoading || !isValid || isMatch}
       >
         Редактировать
       </button>

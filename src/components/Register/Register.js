@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
 import React, { useCallback, useState } from "react";
 import { emailValid } from "../../utils/constants";
-export function Register({ onRegister, isLoading }) {
+export function Register({ onRegister, isLoading ,errorMessage}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -47,6 +47,8 @@ export function Register({ onRegister, isLoading }) {
                 value={values.name || ""}
                 onChange={handleChange}
                 disabled={isLoading}
+                minLength="2"
+                maxLength="30"
                 required
               />
             </label>
@@ -87,6 +89,7 @@ export function Register({ onRegister, isLoading }) {
             </label>
             <div className="register__input-error">{errors.password}</div>
           </div>
+          <span className="register__message-error">{errorMessage.registerPage}</span>
         </div>
         <button
           className="register__submit-btn"

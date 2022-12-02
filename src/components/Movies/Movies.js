@@ -5,7 +5,7 @@ import { Footer } from "../Footer/Footer";
 import { filterMovies, findOnlyShortMovies } from "../../utils/SearchFilter";
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
-import useGetBroserWidth from "../../utils/getBroserWidth";
+import useGetBroserWidth from "../../hooks/getBroserWidth";
 import {
   DEFAULT_SERVER_ERROR,
   MOBILE_RENDER_CARDS,
@@ -25,7 +25,7 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [resMessage, setResMessage] = useState("");
   const width = useGetBroserWidth();
-  const queryData = JSON.parse(sessionStorage.getItem("queryData")) || [];
+  const queryData = sessionStorage.getItem("queryData");
   let allMovies = sessionStorage.getItem("allMoviesData");
  
   useEffect(() => {
@@ -36,18 +36,18 @@ export function Movies({ savedMovies, setSavedMovies, logOut }) {
     }
     console.log(width);
   }, [width]);
-  let filteredShortMovies = queryData?.filteredShortMovies || [];
-  let filteredMovies = queryData?.filteredMovies || [];
+  let filteredShortMovies = JSON.parse(queryData)?.filteredShortMovies || [];
+  let filteredMovies = JSON.parse(queryData)?.filteredMovies || [];
 
   useEffect(() => {
     if (queryData) {
-      setSearchQuery(queryData?.searchQuery);
-      setShortFilmsCheck(queryData?.isShortFilms);
+      setSearchQuery(JSON.parse(queryData)?.searchQuery);
+      setShortFilmsCheck(JSON.parse(queryData)?.isShortFilms);
     }
   }, []);
   useEffect(() => {
     if (queryData) {
-      const updatedQueryData = queryData;
+      const updatedQueryData = JSON.parse(queryData);
       updatedQueryData.isShortFilms = shortFilmsCheck;
       sessionStorage.setItem("queryData", JSON.stringify(updatedQueryData));
     }

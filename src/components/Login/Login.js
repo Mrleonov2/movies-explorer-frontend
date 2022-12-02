@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
 import React, { useCallback, useState } from "react";
 import { emailValid } from "../../utils/constants";
-export function Login({ onLogin, isLoading }) {
+export function Login({ onLogin, isLoading ,errorMessage}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -34,6 +34,7 @@ export function Login({ onLogin, isLoading }) {
             <img src={headerLogo} alt="логотип проекта Movie-Explorer" />
           </Link>
           <h2 className="register__title">Рады видеть!</h2>
+          <div className="login__inputs">
           <div className="register__input-container">
             <label
               className="register__input-title"
@@ -76,7 +77,8 @@ export function Login({ onLogin, isLoading }) {
             </label>
             <div className="register__input-error">{errors.password}</div>
           </div>
-
+          <span className="register__message-error">{errorMessage.loginPage}</span>
+          </div>
           <div className="login__container">
             <button
               className="register__submit-btn"

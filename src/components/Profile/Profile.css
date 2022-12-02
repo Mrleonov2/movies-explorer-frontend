@@ -129,12 +129,19 @@
   opacity: 0.6;
   cursor: pointer;
 }
-.profile__notify {
+.profile__message {
   position: absolute;
-  bottom: -30px;
+  bottom: -60px;
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
+  padding: 5px;
+}
+.profile__message_failed {
   color: #ee3465;
+  border: 1px solid #ee3465;
+}
+.profile__message_success {
+  color: #05dc05;
 }

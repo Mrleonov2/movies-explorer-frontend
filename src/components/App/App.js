@@ -22,6 +22,14 @@ function App() {
   });
   const [savedMovies, setSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState({
+    content: "",
+    status: true,
+  });
+  const [errorMessage, setErrorMessage] = useState({
+    registerPage: "",
+    loginPage: "",
+  });
   const history = useHistory();
   let location = useLocation();
   //Автологин
@@ -66,8 +74,14 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [currentUser._id, setSavedMovies]);
-
+  }, [currentUser._id, setSavedMovies, loggedIn]);
+  useEffect(() => {
+    setErrorMessage({
+      registerPage: "",
+      loginPage: "",
+    });
+    setProfileMessage({ content: "", status: true });
+  }, [location.pathname]);
   const handlePopupClick = () => {
     setIsPopupOpen(!isOpenPopup);
   };
@@ -99,10 +113,11 @@ function App() {
       .editProfile(userData)
       .then((updatedData) => {
         setCurrentUser(updatedData);
+        setProfileMessage({ content: "Изменения сохранены", status: true });
       })
       .catch((err) => {
         console.log(err);
-        signOut();
+        setProfileMessage({ content: err.message, status: false });
       })
       .finally(() => {
         setIsLoading(false);
@@ -122,12 +137,14 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      }).finally(() => {
+        setErrorMessage({ registerPage: "", loginPage: err.message });
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }
   function handleRegister({ name, email, password }) {
-    setIsLoading(true)
+    setIsLoading(true);
     auth
       .register({ name, email, password })
       .then((res) => {
@@ -137,7 +154,9 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      }).finally(() => {
+        setErrorMessage({ registerPage: err.message, loginPage: "" });
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }
@@ -176,13 +195,22 @@ function App() {
               editProfile={handleUpdateProfile}
               logOut={signOut}
               isLoading={isLoading}
+              profileMessage={profileMessage}
             />
           </ProtectedRoute>
           <Route path="/signin">
-            <Login onLogin={handleLogin} isLoading={isLoading} />
+            <Login
+              onLogin={handleLogin}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+            />
           </Route>
           <Route path="/signup">
-            <Register onRegister={handleRegister} isLoading={isLoading} />
+            <Register
+              onRegister={handleRegister}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+            />
           </Route>
           <Route path="*">
             <NotFoundPage />
