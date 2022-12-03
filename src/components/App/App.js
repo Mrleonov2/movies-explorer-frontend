@@ -115,6 +115,7 @@ function App() {
         setCurrentUser(updatedData);
         setProfileMessage({ content: "Изменения сохранены", status: true });
       })
+
       .catch((err) => {
         console.log(err);
         setProfileMessage({ content: err.message, status: false });

@@ -39,7 +39,7 @@ class MainApi {
   logOut() {
     return fetch(`${this._baseUrl}/signout`, {
       method: "GET",
-      credentials: 'include',
+      credentials: "include",
       headers: this._headers(),
     }).then(this._checkResponse);
   }
@@ -53,7 +53,7 @@ class MainApi {
     trailerLink,
     nameRU,
     nameEN,
-    id
+    id,
   }) {
     return fetch(`${this._baseUrl}/movies`, {
       method: "POST",
@@ -65,11 +65,11 @@ class MainApi {
         duration,
         year,
         description,
-        image:'https://api.nomoreparties.co' + image.url,
+        image: "https://api.nomoreparties.co" + image.url,
         trailerLink,
         nameRU,
         nameEN,
-        thumbnail:'https://api.nomoreparties.co' + image.formats.thumbnail.url,
+        thumbnail: "https://api.nomoreparties.co" + image.formats.thumbnail.url,
         movieId: id,
       }),
     }).then(this._checkResponse);
@@ -87,7 +87,9 @@ class MainApi {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка ${res.status}`);
+    return res.json().then((err) => {
+      throw err;
+    });
   }
 }
 const mainApi = new MainApi({

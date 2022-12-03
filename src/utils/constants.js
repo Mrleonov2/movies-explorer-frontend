@@ -1,6 +1,8 @@
 const BASE_URL = "https://api.explorer.leonov.nomoredomains.club";
 const MOVIES_URL = "https://api.nomoreparties.co/beatfilm-movies";
-const emailValid = "[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
+const emailValid = {
+  regExp: "[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-]+$",
+};
 const MAX_DURATION_SHORT_FILM = 40;
 const LAPTOP_WIDTH = 760;
 const DEFAULT_SERVER_ERROR =
@@ -18,5 +20,5 @@ export {
   DEFAULT_SERVER_ERROR,
   LAPTOP_RENDER_CARDS,
   MOBILE_RENDER_CARDS,
-  NOT_FOUND_MESSAGE
+  NOT_FOUND_MESSAGE,
 };
