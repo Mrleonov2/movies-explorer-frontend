@@ -56,7 +56,7 @@ function App() {
         .catch((e) => {
           setLoggedIn(false);
           console.log(e);
-          history.push("/signin");
+          history.push("/");
         });
     }
   }, [loggedIn, history]);
@@ -118,7 +118,6 @@ function App() {
       .catch((err) => {
         console.log(err);
         setProfileMessage({ content: err.message, status: false });
-        signOut();
       })
       .finally(() => {
         setIsLoading(false);

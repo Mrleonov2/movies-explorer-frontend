@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
 import React, { useCallback, useState } from "react";
-import { emailValid } from "../../utils/constants";
 export function Login({ onLogin, isLoading ,errorMessage}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -49,8 +48,8 @@ export function Login({ onLogin, isLoading ,errorMessage}) {
                 name="email"
                 value={values.email || ""}
                 onChange={handleChange}
-                pattern={emailValid}
                 disabled={isLoading}
+                pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
                 required
               />
             </label>

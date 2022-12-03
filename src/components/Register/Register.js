@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
 import React, { useCallback, useState } from "react";
-import { emailValid } from "../../utils/constants";
+import { emailValid } from "../../utils/constants.js";
 export function Register({ onRegister, isLoading ,errorMessage}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -64,9 +64,9 @@ export function Register({ onRegister, isLoading ,errorMessage}) {
                 id="register__input-email"
                 placeholder="Электронная почта"
                 value={values.email || ""}
-                pattern={emailValid}
                 onChange={handleChange}
                 disabled={isLoading}
+                pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
                 required
               />
             </label>

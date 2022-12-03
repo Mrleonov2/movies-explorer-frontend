@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { emailValid } from "../../utils/constants";
 export function Profile({ editProfile, logOut, isLoading, profileMessage }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [isValid, setIsValid] = useState(false);
@@ -52,8 +51,8 @@ export function Profile({ editProfile, logOut, isLoading, profileMessage }) {
             type="email"
             value={values.email}
             onChange={handleChange}
-            pattern={emailValid}
             disabled={isLoading}
+            pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
           />
         </div>
         {<span className={`profile__message ${profileMessage.status ? 'profile__message_success' : 'profile__message_failed'}`}>{profileMessage.content}</span>}
