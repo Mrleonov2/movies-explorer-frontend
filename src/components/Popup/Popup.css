@@ -1,0 +1,140 @@
+.popup {
+  min-width: 320px;
+  width: 100%;
+  min-height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgb(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  visibility: hidden;
+  transition: visibility 0.25s, opacity 0.25s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+  overflow-y: hidden;
+  
+}
+
+.popup_visible {
+  visibility: visible;
+  opacity: 1;
+  overflow-y: hidden;
+}
+
+.popup__container {
+  z-index: 0;
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: calc(67.7%);
+
+}
+
+.popup__nav-list {
+  margin-top: 105px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup__container-logo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-right: 22px;
+  margin-top: 22px;
+}
+
+.popup__close-btn {
+  align-self: flex-end;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  background-color: #ffffff;
+  background-image: url(../../images/close-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+
+  transition: opacity 0.3s ease-in-out;
+  outline: none;
+  cursor: pointer;
+}
+
+.popup__close-btn:hover {
+  opacity: 0.6;
+}
+
+.popup__link {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  margin-bottom: 22px;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+  width: min-content;
+  white-space: nowrap;
+}
+.popup__link_active {
+  box-sizing: border-box;
+  border-bottom: 2px solid black;
+}
+
+.popup__account {
+  display: flex;
+  align-items: center;
+}
+
+.popup__container-info {
+  padding: 0 90px 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+@media screen and (max-width: 590px) {
+  .popup__container-info {
+    padding: 0 50px 46px;
+  }
+}
+
+
+
+
+
+@media screen and (max-width: 420px) {
+  .popup__container-info {
+    padding: 0 50px 46px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .popup__container-logo {
+    margin-right: 13.5px;
+    margin-top: 13.5px;
+  }
+  .popup__link {
+    margin-bottom: 15px;
+    
+  }
+  .popup__container {
+
+    width: 100%;
+    
+  }
+}

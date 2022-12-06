@@ -1,17 +1,19 @@
+import { BASE_URL } from "./constants";
 class MainApi {
-  constructor({ baseUrl}) {
+  constructor({ baseUrl }) {
     this._baseUrl = baseUrl;
   }
-  _headers(){
-    return{
+  _headers() {
+    return {
       "Content-Type": "application/json",
-    }
+      Accept: "application/json",
+    };
   }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
+  getSavedFilms() {
+    return fetch(`${this._baseUrl}/movies`, {
       method: "GET",
-      credentials:"include",
+      credentials: "include",
       headers: this._headers(),
     }).then(this._checkResponse);
   }
@@ -19,75 +21,79 @@ class MainApi {
   getProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "GET",
-      credentials:"include",
+      credentials: "include",
       headers: this._headers(),
     }).then(this._checkResponse);
   }
-  editProfile(name, about) {
+  editProfile({ email, name }) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      credentials:"include",
+      credentials: "include",
       headers: this._headers(),
       body: JSON.stringify({
+        email,
         name,
-        about,
+      }),
+    }).then(this._checkResponse);
+  }
+  logOut() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: "GET",
+      credentials: "include",
+      headers: this._headers(),
+    }).then(this._checkResponse);
+  }
+  saveMovie({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    id,
+  }) {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: "POST",
+      credentials: "include",
+      headers: this._headers(),
+      body: JSON.stringify({
+        country,
+        director,
+        duration,
+        year,
+        description,
+        image: "https://api.nomoreparties.co" + image.url,
+        trailerLink,
+        nameRU,
+        nameEN,
+        thumbnail: "https://api.nomoreparties.co" + image.formats.thumbnail.url,
+        movieId: id,
       }),
     }).then(this._checkResponse);
   }
 
-  editAvatar(avatar) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: "PATCH",
-      credentials:"include",
-      headers: this._headers(),
-      body: JSON.stringify({
-        avatar,
-      }),
-    }).then(this._checkResponse);
-  }
-  addCard(name, link) {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: "POST",
-      credentials:"include",
-      headers: this._headers(),
-      body: JSON.stringify({
-        name,
-        link,
-      }),
-    }).then(this._checkResponse);
-  }
-  deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
+  removeMovie(moviesId) {
+    return fetch(`${this._baseUrl}/movies/${moviesId}`, {
       method: "DELETE",
-      credentials:"include",
+      credentials: "include",
       headers: this._headers(),
     }).then(this._checkResponse);
-  }
-  changeLikeCardStatus(id, likeStatus) {
-    if (likeStatus) {
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: "PUT",
-        credentials:"include",
-        headers: this._headers(),
-      }).then(this._checkResponse);
-    } else {
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: "DELETE",
-        credentials:"include",
-        headers: this._headers(),
-      }).then(this._checkResponse);
-    }
   }
 
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка ${res.status}`);
+    return res.json().then((err) => {
+      throw err;
+    });
   }
 }
 const mainApi = new MainApi({
-  baseUrl: "https://api.movies.leonov.nomorepartiesxyz.ru",
+  baseUrl: BASE_URL,
 });
 
 export { mainApi };

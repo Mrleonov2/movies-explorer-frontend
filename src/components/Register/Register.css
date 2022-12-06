@@ -64,6 +64,7 @@
 
 .register__input-container {
   margin: 20px 0 0;
+  position:relative;
 }
 .register__input-container:first-of-type {
   margin: 0px;
@@ -109,6 +110,7 @@
 }
 
 .register__input-error {
+  position: absolute;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -116,7 +118,8 @@
   letter-spacing: 0em;
   text-align: left;
   color: #ee3465;
-  margin-top: 5px;
+  bottom: -23px;
+
 }
 
 .register__submit-btn {
@@ -149,12 +152,16 @@
     margin: 69px 0 14px 0;
   }
 }
+.register__submit-btn:disabled {
+  background-color: #bfc7c5;
+}
 
 .register__btn-container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
+
 }
 
 @media screen and (max-width: 480px) {
@@ -204,11 +211,7 @@
   }
 }
 
-@media screen and (max-width: 480px) {
-  .register__input-list {
-    margin-bottom: 153px;
-  }
-}
+
 
 .register__log-in-btn:hover {
   opacity: 0.6;
@@ -221,5 +224,17 @@
 .register__input-list {
   margin-bottom: 134px;
   padding: 0;
+  position: relative;
 
+}
+@media screen and (max-width: 480px) {
+  .register__input-list {
+    margin-bottom: 171px;
+  }
+}
+.register__message-error {
+  padding: 5px;
+  position: absolute;
+  bottom: -60px;
+  color: red;
 }

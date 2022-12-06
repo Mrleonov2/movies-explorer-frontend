@@ -1,33 +1,71 @@
-import React, { useState } from "react";
-import imgSaveFilm from "../../../images/img-save-film.svg";
-import imgFilm from "../../../images/photo.jpg";
-import imgDelFilm from "../../../images/img-del-film.svg";
 
-export function MoviesCard({ isActive, isDeleted, isInactive }) {
-  const [active, setActive] = useState(true);
-  const [deleted, setDeleted] = useState(isDeleted);
-  const [inactive, setInactive] = useState(false);
+import React, { useState, useEffect } from "react";
+export function MoviesCard({
+  item,
+  isSavedPage,
+  onDeleteHandler,
+  onSaveHandler,
+  savedMovies,
+}) {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    // окрашиваем кнопку лайка, если он фильм нашелся в сохраненных
+    if (savedMovies.some((movie) => movie.movieId === item.id)) {
+      setActive(true);
+    }
+  }, [savedMovies, item.id]);
+
+  const handleSave = () => {
+    console.log(item);
+    onSaveHandler(item, setActive);
+  };
+
+  const handleDelete = () => {
+    // условие для удаления с обоих страниц
+    // так как ключи в объектах отличаются
+    onDeleteHandler(item._id || item.id, setActive);
+  };
 
   return (
-    <li className="movies-card">
-      {(inactive && (
-        <button className="movies-card__btn-container" type="button"></button>
-      )) ||
-        (active && (
-          <button className="movies-card__btn-container" type="button">
-            <img src={imgSaveFilm} alt="saved" className="movies-card__btn" />
-          </button>
-        )) ||
-        (deleted && (
-          <button className="movies-card__btn-container" type="button">
-            <img src={imgDelFilm} alt="delete" className="movies-card__btn" />
-          </button>
-        ))}
+    <li className={`movies-card`}>
+      {isSavedPage ? (
+        <button
+          className={`movies-card__btn movies-card__btn_del`}
+          type="button"
+          onClick={handleDelete}
+        ></button>
+      ) : (
+        <button
+
+          className={`movies-card__btn movies-card__btn_like_inactive ${
+            active && "movies-card__btn_like_active"
+          }`}
+          type="button"
+          
+          onClick={active ? handleDelete : handleSave}
+        ></button>
+      )}
+
       <div className="movies-card__container">
-        <h3 className="movies-card__title">В погоне за Бэнкси</h3>
-        <p className="movies-card__duration">27 минут</p>
+        <h3 className="movies-card__title">{item.nameRU}</h3>
+        <p className="movies-card__duration">{item.duration} минут</p>
       </div>
-      <img className="movies-card__img" src={imgFilm} alt="film-pic" />
+      <a
+        className="movies-card__link"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={item.trailerLink}
+      >
+        <img
+          className="movies-card__img"
+          src={
+            isSavedPage
+              ? `${item.image}`
+              : `https://api.nomoreparties.co/${item.image.url}`
+          }
+          alt="film-pic"
+        />
+      </a>
     </li>
   );
 }

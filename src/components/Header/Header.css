@@ -76,7 +76,7 @@
   visibility: visible;
   display: flex;
   align-items: center;
-  background-color: #fafafa;
+  background-color: transparent;
 }
 
 .header__account_hidden {
@@ -130,6 +130,10 @@
   font-weight: 500;
   line-height: 16px;
   letter-spacing: 0px;
+  text-decoration:none;
+  color:black;
+  display: flex;
+  align-items: center;
 }
 
 .header__link {

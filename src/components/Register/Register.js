@@ -1,10 +1,35 @@
 import { Link } from "react-router-dom";
 import headerLogo from "../../images/headerLogo.svg";
-import React from "react";
-export function Register() {
+import React, { useCallback, useState } from "react";
+import { emailValid } from "../../utils/constants.js";
+export function Register({ onRegister, isLoading ,errorMessage}) {
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!values.password || !values.email || !values.name) {
+      return;
+    }
+    console.log(values);
+    onRegister(values);
+  };
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
   return (
     <section className="register">
-      <div className="register__container">
+      <form
+        className="register__container"
+        name="register"
+        onSubmit={handleSubmit}
+      >
         <Link to="/" className="register__logo">
           <img src={headerLogo} alt="логотип проекта Movie-Explorer" />
         </Link>
@@ -13,30 +38,64 @@ export function Register() {
           <div className="register__input-container">
             <label className="register__input-title">
               Имя
-              <input required className="register__input" type="text" />
+              <input
+                className="register__input"
+                type="text"
+                id="register__input-name"
+                placeholder="Имя"
+                name="name"
+                value={values.name || ""}
+                onChange={handleChange}
+                disabled={isLoading}
+                minLength="2"
+                maxLength="30"
+                required
+              />
             </label>
+            <div className="register__input-error">{errors.name}</div>
           </div>
           <div className="register__input-container">
             <label className="register__input-title">
               E-mail
-              <input required className="register__input" type="email" />
+              <input
+                className="register__input"
+                type="email"
+                name="email"
+                id="register__input-email"
+                placeholder="Электронная почта"
+                value={values.email || ""}
+                onChange={handleChange}
+                disabled={isLoading}
+                pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
+                required
+              />
             </label>
+            <div className="register__input-error">{errors.email}</div>
           </div>
           <div className="register__input-container">
             <label className="register__input-title">
               Пароль
               <input
-                required
+                className="register__input"
+                id="register__input-password"
+                placeholder="Пароль"
                 type="password"
-                className="register__input register__input_error"
+                name="password"
+                value={values.password || ""}
+                onChange={handleChange}
+                disabled={isLoading}
+                required
               />
             </label>
+            <div className="register__input-error">{errors.password}</div>
           </div>
-          <div className="register__input-error" type="text">
-            Что-то пошло не так...
-          </div>
+          <span className="register__message-error">{errorMessage.registerPage}</span>
         </div>
-        <button className="register__submit-btn" type="submit">
+        <button
+          className="register__submit-btn"
+          type="submit"
+          disabled={!isValid || isLoading}
+        >
           Зарегистрироваться
         </button>
         <div className="register__btn-container">
@@ -45,7 +104,7 @@ export function Register() {
             Войти
           </Link>
         </div>
-      </div>
+      </form>
     </section>
   );
 }

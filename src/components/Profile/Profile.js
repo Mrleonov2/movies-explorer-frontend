@@ -1,21 +1,84 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import  {emailValid}  from "../../utils/constants";
+export function Profile({ editProfile, logOut, isLoading, profileMessage }) {
+  const currentUser = React.useContext(CurrentUserContext);
+  const [isValid, setIsValid] = useState(false);
+  const [values, setValues] = useState({});
+  const isMatch =
+    values.name === currentUser.name && values.email === currentUser.email;
+  useEffect(() => {
+    setValues(currentUser);
+  }, [currentUser]);
 
-export function Profile() {
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setIsValid(target.closest("form").checkValidity());
+  };
+  const handleSubmit = (event) => {
+    if (isValid && !isMatch) {
+      editProfile(values);
+    } else {
+      return;
+    }
+  };
+
   return (
     <section className="profile">
-      <h2 className="profile__title">Привет, Михаил!</h2>
-      <div className="profile__container">
+      <h2 className="profile__title">Привет, {currentUser.name}!</h2>
+      <form className="profile__container" name="profile-form">
         <div className="profile__input-container">
-          <div className="profile__input profile__input_title">Имя</div>
-          <div className="profile__input">Михаил</div>
+          <div className=" profile__input-title">Имя</div>
+          <input
+            className="profile__input"
+            name="name"
+            type="text"
+            value={values.name}
+            onChange={handleChange}
+            disabled={isLoading}
+            minLength="2"
+            maxLength="30"
+          />
         </div>
         <div className="profile__input-container">
-          <div className="profile__input profile__input_title">E-mail</div>
-          <div className="profile__input">mikhail-leonov@yandex.ru</div>
+          <div className="profile__input-title">E-mail</div>
+          <input
+            className="profile__input"
+            name="email"
+            type="email"
+            value={values.email}
+            onChange={handleChange}
+            disabled={isLoading}
+            pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$"
+          />
         </div>
-      </div>
-      <button className="profile__edit-btn" type="button">Редактировать</button>
-      <button className="profile__log-out-btn" type="button">Выйти из аккаунта</button>
+        {
+          <span
+            className={`profile__message ${
+              profileMessage.status
+                ? "profile__message_success"
+                : "profile__message_failed"
+            }`}
+          >
+            {profileMessage.content}
+          </span>
+        }
+      </form>
+      <button
+        className="profile__edit-btn"
+        type="button"
+        onClick={handleSubmit}
+        disabled={isLoading || !isValid || isMatch}
+      >
+        Редактировать
+      </button>
+      <button className="profile__log-out-btn" type="button" onClick={logOut}>
+        Выйти из аккаунта
+      </button>
     </section>
   );
 }
